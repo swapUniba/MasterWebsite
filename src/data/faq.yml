@@ -1,0 +1,21 @@
+items:
+  - question: "Quali requisiti sono previsti per l’ammissione?"
+    answer: "Queste informazioni sono dimostrative: i requisiti definitivi saranno indicati nel bando ufficiale."
+    category: "Ammissione"
+    order: 10
+  - question: "Come si presenta la candidatura?"
+    answer: "La procedura descritta è dimostrativa; modalità e documenti saranno confermati alla pubblicazione dell’avviso."
+    category: "Ammissione"
+    order: 20
+  - question: "Le lezioni sono compatibili con l’attività lavorativa?"
+    answer: "La formula weekend è una previsione dimostrativa e il calendario effettivo sarà comunicato dagli Atenei."
+    category: "Didattica"
+    order: 30
+  - question: "Sono previste attività progettuali?"
+    answer: "Il project work è presentato a scopo dimostrativo; organizzazione e partner saranno definiti nel programma ufficiale."
+    category: "Didattica"
+    order: 40
+  - question: "Qual è la quota di iscrizione?"
+    answer: "L’importo mostrato sul sito è dimostrativo e non costituisce un dato vincolante; farà fede il bando ufficiale."
+    category: "Costi"
+    order: 50

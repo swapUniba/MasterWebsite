@@ -1,0 +1,12 @@
+items:
+  - title: "Apertura delle candidature"
+    date: "2027-01-15"
+    description: "Data dimostrativa: l’apertura delle candidature sarà confermata dagli Atenei."
+  - title: "Webinar di presentazione"
+    date: "2027-01-30"
+    time: "17:30"
+    description: "Data e orario dimostrativi, soggetti a conferma organizzativa."
+  - title: "Chiusura candidature"
+    date: "2027-02-15"
+    time: "23:59"
+    description: "Scadenza dimostrativa: verificare il bando ufficiale quando pubblicato."
