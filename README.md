@@ -1,6 +1,6 @@
 # Master in Intelligenza Artificiale e Data Science
 
-Sito statico del Master universitario di primo livello in Intelligenza Artificiale e Data Science, offerto congiuntamente da **Università degli Studi di Bari Aldo Moro** e **Politecnico di Bari**.
+Sito statico del Master universitario di II livello in Intelligenza Artificiale e Data Science, offerto congiuntamente da **Università degli Studi di Bari Aldo Moro** e **Politecnico di Bari**.
 
 ## 1. Stato del contenuto: sito dimostrativo
 
@@ -30,9 +30,9 @@ Comandi disponibili (definiti in `package.json`):
 | `npm run dev` | avvia il server di sviluppo con ricarica automatica (di norma su `http://localhost:4321`) |
 | `npm run build` | genera il sito statico in `dist/` |
 | `npm run preview` | serve localmente il contenuto già generato in `dist/` (utile per verificare l'output di produzione) |
-| `npm run validate` | esegue in sequenza `astro check` (tipi/contenuti), i test Vitest, la build e il controllo dei link interni; deve terminare senza errori prima di ogni deploy manuale o modifica strutturale |
+| `npm run validate` | esegue in sequenza `astro check` (tipi/contenuti), la build, i test Vitest e il controllo dei link interni; deve terminare senza errori prima di ogni deploy manuale o modifica strutturale |
 
-Comandi accessori: `npm run check` (solo type-check), `npm test` (solo test Vitest), `npm run check:links` (solo controllo link, richiede una build già presente in `dist/`).
+Comandi accessori: `npm run check` (solo type-check), `npm test` (solo test Vitest), `npm run check:links` (solo controllo link). **Attenzione:** parte dei test Vitest e l'intero controllo dei link leggono l'output generato in `dist/`, quindi richiedono una build già presente; su un checkout pulito eseguire `npm run build` prima di `npm test`/`npm run check:links`, oppure semplicemente `npm run validate`, che li ordina già correttamente.
 
 ## 4. Mappa dei contenuti
 
@@ -69,7 +69,7 @@ Procedura di attivazione, una tantum:
 1. **Installare la GitHub App di Pages CMS** sull'account/organizzazione proprietaria del repository, concedendo accesso al solo repository di questo sito (da [app.pagescms.org](https://app.pagescms.org), pulsante di installazione GitHub).
 2. **Aprire il repository in Pages CMS**: dopo l'installazione, il repository compare nella dashboard di Pages CMS; aprendolo, l'interfaccia legge automaticamente `.pages.yml` nella root e costruisce i form di editing in base a quel file.
 3. **Modificare i contenuti** dai form generati (pagine editoriali, corsi, docenti, news, impostazioni). Ogni salvataggio in Pages CMS crea un **commit diretto sul branch `main`** — non esiste un flusso di bozza/pull request integrato in questa configurazione.
-4. **Build automatica conseguente**: ogni push su `main` (compreso quello generato da Pages CMS) avvia il workflow `.github/workflows/deploy.yml`, che esegue type-check, test, build Astro e pubblica il risultato su GitHub Pages. Non è necessaria alcuna azione manuale dopo il salvataggio in Pages CMS: entro pochi minuti le modifiche sono online.
+4. **Build automatica conseguente**: ogni push su `main` (compreso quello generato da Pages CMS) avvia il workflow `.github/workflows/deploy.yml`, che esegue `npm run validate` (type-check, build, test, controllo dei link) e pubblica il risultato su GitHub Pages. Non è necessaria alcuna azione manuale dopo il salvataggio in Pages CMS: entro pochi minuti le modifiche sono online.
 
 Chi ha accesso in scrittura a `main` di fatto pubblica direttamente sul sito: va quindi trattato come un ambiente di produzione anche per gli editor non tecnici.
 
@@ -87,14 +87,21 @@ I campi esposti in `.pages.yml` corrispondono esattamente agli schemi Zod in `sr
 
 ## 7. Configurazione di GitHub Pages
 
-Il deploy è gestito dal workflow `.github/workflows/deploy.yml`, che si attiva a ogni push su `main` (o manualmente via `workflow_dispatch`) ed esegue `astro check`, i test, la build (`withastro/action`) e la pubblicazione tramite `actions/deploy-pages`.
+Il deploy è gestito dal workflow `.github/workflows/deploy.yml`, che si attiva a ogni push su `main` (o manualmente via `workflow_dispatch`) ed esegue esattamente lo stesso comando usato in locale, `npm run validate` (type-check, build, test, controllo dei link interni), seguito dalla build dell'artefatto Pages (`withastro/action`) e dalla pubblicazione tramite `actions/deploy-pages`.
 
 Perché il workflow possa pubblicare, nel repository su GitHub è necessario impostare, una tantum:
 
 1. **Settings → Pages → Build and deployment → Source**: selezionare **"GitHub Actions"** (non la sorgente legacy "Deploy from a branch"). Con questa impostazione, GitHub Pages pubblica esattamente l'artefatto prodotto dal workflow, senza richiedere un branch `gh-pages` separato.
 2. Verificare che il workflow abbia i permessi già dichiarati in `deploy.yml` (`pages: write`, `id-token: write`): sono sufficienti così come sono, nessuna configurazione aggiuntiva dei permessi del repository è richiesta oltre l'abilitazione della sorgente "GitHub Actions".
 
-Dopo il primo push su `main` con questa sorgente attiva, il sito è raggiungibile all'URL di GitHub Pages assegnato al repository (`https://<account>.github.io/<repository>/` oppure, se configurato come da punto 8, sul dominio personalizzato).
+**Il sottopercorso `https://<account>.github.io/<repository>/` non è utilizzabile così com'è.** Il repository include `public/CNAME` con il dominio dimostrativo `master.example.it`: al primo deploy GitHub Pages lo imposta come dominio personalizzato e reindirizza l'URL `.github.io` verso quel dominio, che nessuno possiede e il cui DNS non risolve. Il sito risulterebbe quindi irraggiungibile.
+
+Prima che il primo push abbia senso, scegliere una delle due opzioni:
+
+- **(a) Dominio reale:** completare la sostituzione coordinata del dominio descritta al punto 8 (`astro.config.mjs`, `public/CNAME`, `public/robots.txt`) e configurare il DNS come da punto 9. Solo con il DNS attivo il sito è raggiungibile sul dominio definitivo.
+- **(b) Deploy temporaneo senza dominio personalizzato:** eliminare `public/CNAME` prima del push. Il sito viene allora servito sull'URL `https://<account>.github.io/<repository>/`. Non serve nessun'altra modifica: il progetto non configura `base` in Astro, quindi non ci sono link da riscrivere; restano però assoluti al dominio di `astro.config.mjs` i soli `canonical`, Open Graph e sitemap, corretti al momento in cui il dominio definitivo viene impostato al punto 8.
+
+Finché il DNS non è configurato, la verifica di riferimento resta comunque quella locale (`npm run build` seguito da `npm run preview`, oppure `npm run dev`), non il sottopercorso `.github.io/<repository>`.
 
 ## 8. Dominio personalizzato: sostituzione coordinata
 
