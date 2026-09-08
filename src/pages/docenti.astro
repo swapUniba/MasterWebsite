@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/navigation/Header.astro';
 import Footer from '../components/navigation/Footer.astro';
@@ -31,11 +31,16 @@ const master = masterEntry.data;
 const contacts = contactsEntry.data;
 const editorial = editorialEntry.data;
 
-const groups = CATEGORY_ORDER.map((category) => ({
-  category,
-  id: CATEGORY_IDS[category],
-  members: sortByOrder(faculty.filter((entry) => entry.data.category === category)),
-})).filter((group) => group.members.length > 0);
+const groups = await Promise.all(
+  CATEGORY_ORDER.map(async (category) => ({
+    category,
+    id: CATEGORY_IDS[category],
+    members: await Promise.all(
+      sortByOrder(faculty.filter((entry) => entry.data.category === category))
+        .map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+    ),
+  })),
+).then((all) => all.filter((group) => group.members.length > 0));
 ---
 <BaseLayout title={editorial.title} description={editorial.description}>
   <Notice message={master.demo_notice} />
@@ -45,9 +50,26 @@ const groups = CATEGORY_ORDER.map((category) => ({
     {groups.map((group) => (
       <Section labelledBy={`${group.id}-heading`}>
         <SectionHeading id={`${group.id}-heading`} title={group.category} />
-        <div class="card-grid">{group.members.map((entry) => <FacultyCard entry={entry} />)}</div>
+        <div class="card-grid">
+          {group.members.map(({ entry, Content }) => (
+            <FacultyCard entry={entry}>
+              <div class="faculty-bio"><Content /></div>
+              {(entry.data.email || entry.data.website) && (
+                <ul class="faculty-contacts">
+                  {entry.data.email && <li><a href={`mailto:${entry.data.email}`}>{entry.data.email}</a></li>}
+                  {entry.data.website && <li><a href={entry.data.website}>Sito personale</a></li>}
+                </ul>
+              )}
+            </FacultyCard>
+          ))}
+        </div>
       </Section>
     ))}
   </main>
   <Footer master={master} contacts={contacts} />
 </BaseLayout>
+<style>
+  .faculty-bio { margin-top: 1rem; color: var(--color-text-muted); font-size: .95rem; }
+  .faculty-bio :global(p + p) { margin-top: .75rem; }
+  .faculty-contacts { display: grid; gap: .4rem; margin-top: 1rem; padding: 0; list-style: none; font-size: .9rem; font-weight: 650; overflow-wrap: anywhere; }
+</style>

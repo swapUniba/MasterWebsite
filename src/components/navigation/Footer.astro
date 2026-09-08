@@ -7,6 +7,7 @@ const { master, contacts } = Astro.props;
   <div class="container footer-grid">
     <div>
       <p class="footer-title">{master.short_title}</p>
+      <p class="footer-official-title">{master.title}</p>
       <p>Anno accademico {master.academic_year}</p>
       <ul class="institutions">
         {master.institutions.map((institution) => <li><a href={institution.url}>{institution.name}</a></li>)}
@@ -27,7 +28,8 @@ const { master, contacts } = Astro.props;
   .site-footer { padding-block: 3rem; background: var(--color-primary); color: white; font-size: .9rem; }
   .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem; }
   .footer-grid > div { min-width: 0; }
-  .footer-title { font-weight: 750; font-size: 1.1rem; margin-bottom: .5rem; }
+  .footer-title { font-weight: 750; font-size: 1.1rem; margin-bottom: .25rem; }
+  .footer-official-title { margin-bottom: .5rem; }
   h2 { font-size: 1rem; margin-bottom: 1rem; letter-spacing: 0; }
   ul { list-style: none; padding: 0; }
   li + li { margin-top: .6rem; }

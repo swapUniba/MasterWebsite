@@ -90,14 +90,15 @@ describe('output statico', () => {
     const html = await home();
     const hero = html.match(/<section\b[^>]*class="hero"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
     expect(hero).toContain('href="#il-master"');
-    expect(hero).toContain('href="/ammissione"');
+    expect(hero).toContain('href="/ammissione/"');
     expect(hero).toMatch(/class="hero__visual"[^>]*aria-hidden="true"/);
     const facts = html.match(/<dl\b[^>]*id="key-facts"[^>]*>[\s\S]*?<\/dl>/)?.[0] ?? '';
-    for (const value of ['CFU', '60', 'Durata', '12 mesi', 'Ore complessive', '1.500', 'Modalità', 'Mista', 'Sede', 'Bari']) {
+    for (const value of ['CFU', '60', 'Durata', '12 mesi', 'Ore complessive', '1.500',
+      'Posti disponibili', '30', 'Modalità', 'Mista', 'Sede', 'Bari']) {
       expect(facts).toContain(value);
     }
-    expect(facts.match(/<dt\b/g)).toHaveLength(5);
-    expect(facts.match(/<dd\b/g)).toHaveLength(5);
+    expect(facts.match(/<dt\b/g)).toHaveLength(6);
+    expect(facts.match(/<dd\b/g)).toHaveLength(6);
   });
 
   it('ordina corsi, persone e notizie e offre avatar e date leggibili', async () => {
@@ -116,6 +117,38 @@ describe('output statico', () => {
     expect(deadlines.indexOf('2027-01-30')).toBeLessThan(deadlines.indexOf('2027-02-15'));
     expect(deadlines).toContain('17:30');
     expect(deadlines).toContain('23:59');
+  });
+
+  it('raggiunge dalla navigazione ogni pagina pubblicata e la sezione introduttiva', async () => {
+    for (const page of ['dist/index.html', 'dist/faq/index.html', 'dist/news/index.html', 'dist/404.html']) {
+      const header = (await readFile(page, 'utf8')).match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0] ?? '';
+      for (const href of ['/', '/#il-master', '/programma/', '/docenti/', '/ammissione/', '/news/', '/faq/', '/contatti/']) {
+        expect(header, `${page} → ${href}`).toContain(`href="${href}"`);
+      }
+    }
+  });
+
+  it('rende il titolo ufficiale del Master nel footer', async () => {
+    const footer = (await home()).match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
+    expect(footer).toContain('Master di II livello in Intelligenza Artificiale e Data Science');
+  });
+
+  it('espone semestre dei moduli, contatti e biografie dei docenti', async () => {
+    const programma = await readFile('dist/programma/index.html', 'utf8');
+    expect(programma).toMatch(/<dt\b[^>]*>Semestre<\/dt>/);
+    expect(programma).toContain('Primo semestre');
+    const docenti = await readFile('dist/docenti/index.html', 'utf8');
+    expect(docenti).toContain('href="mailto:mario.rossi@demo-uniba.it"');
+    expect(docenti).toContain('progettazione di sistemi informativi');
+  });
+
+  it('assegna un nome accessibile a ogni sezione generata', async () => {
+    for (const page of ['dist/404.html', 'dist/news/index.html', 'dist/news/apertura-candidature/index.html']) {
+      const html = await readFile(page, 'utf8');
+      const sections = html.match(/<section\b[^>]*class="section[^"]*"[^>]*>/g) ?? [];
+      expect(sections.length, page).toBeGreaterThan(0);
+      for (const section of sections) expect(section, page).toContain('aria-labelledby=');
+    }
   });
 
   it('rende istituzioni e contatti nel footer', async () => {

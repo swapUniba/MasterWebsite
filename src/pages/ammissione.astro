@@ -48,7 +48,7 @@ const documents = [
           <p class="admission-fee">{master.fee}</p>
         </div>
         <div>
-          <h3 id="procedura-heading">Procedura e scadenze</h3>
+          <SectionHeading id="procedura-heading" title="Procedura e scadenze" />
           {deadlines.length > 0
             ? <DeadlineList items={deadlines} />
             : <EmptyState title="Scadenze non ancora pubblicate" description="Il calendario di ammissione sarà comunicato dagli Atenei." />}
@@ -70,7 +70,6 @@ const documents = [
 <style>
   .admission-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
   .admission-fee { font-size: 1.5rem; font-weight: 750; }
-  h3 { margin-bottom: 1rem; }
   .document-list { display: grid; gap: .75rem; margin-bottom: 1.5rem; padding: 0; list-style: none; font-weight: 650; }
   @media (max-width: 52rem) { .admission-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
 </style>

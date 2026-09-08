@@ -30,15 +30,16 @@ if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/c
 const master = masterEntry.data;
 const contacts = contactsEntry.data;
 ---
-<BaseLayout title={news.title} description={news.summary}>
+<BaseLayout title={news.title} description={news.summary} image={news.image}>
   <Notice message={master.demo_notice} />
   <Header master={master} currentPath={Astro.url.pathname} />
   <main id="main-content" tabindex="-1">
     <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news/' }, { label: news.title }]} />
-    <PageHeader title={news.title} eyebrow="News" description={news.summary}>
+    <PageHeader id="news-title" title={news.title} eyebrow="News" description={news.summary}>
       <p class="news-date"><time datetime={news.date.toISOString().slice(0, 10)}>{formatItalianDate(news.date)}</time></p>
     </PageHeader>
-    <Section>
+    <Section labelledBy="news-title">
+      {news.image && <img class="news-image" src={news.image} alt={news.image_alt} width="1600" height="900" loading="lazy" />}
       <div class="prose"><Content /></div>
       <p class="back-link"><a href="/news/">← Torna a tutte le news</a></p>
     </Section>
@@ -46,6 +47,7 @@ const contacts = contactsEntry.data;
   <Footer master={master} contacts={contacts} />
 </BaseLayout>
 <style>
+  .news-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 2rem; }
   .news-date { margin-top: 1rem; font-weight: 650; }
   .back-link { margin-top: 2rem; }
 </style>

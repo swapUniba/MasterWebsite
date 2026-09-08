@@ -5,6 +5,7 @@ import Header from '../../components/navigation/Header.astro';
 import Footer from '../../components/navigation/Footer.astro';
 import Notice from '../../components/elements/Notice.astro';
 import Section from '../../components/layout/Section.astro';
+import SectionHeading from '../../components/layout/SectionHeading.astro';
 import PageHeader from '../../components/layout/PageHeader.astro';
 import EmptyState from '../../components/elements/EmptyState.astro';
 import NewsCard from '../../components/cards/NewsCard.astro';
@@ -29,7 +30,8 @@ const news = publishedNews(newsEntries).sort((a, b) => b.data.date.valueOf() - a
   <Header master={master} currentPath={Astro.url.pathname} />
   <main id="main-content" tabindex="-1">
     <PageHeader title={editorial.title} eyebrow={editorial.eyebrow} description={editorial.description} />
-    <Section>
+    <Section labelledBy="archivio-heading">
+      <SectionHeading id="archivio-heading" title={editorial.heading} />
       {news.length > 0
         ? <div class="card-grid">{news.map((entry) => <NewsCard entry={entry} />)}</div>
         : <EmptyState title="Nessuna news pubblicata" description="Le comunicazioni saranno pubblicate qui non appena disponibili." />}

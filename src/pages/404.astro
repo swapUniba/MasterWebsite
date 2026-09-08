@@ -20,14 +20,14 @@ const contacts = contactsEntry.data;
   <Notice message={master.demo_notice} />
   <Header master={master} currentPath={Astro.url.pathname} />
   <main id="main-content" tabindex="-1">
-    <Section>
+    <Section labelledBy="not-found-heading">
       <div class="not-found">
-        <h1>Pagina non trovata</h1>
+        <h1 id="not-found-heading">Pagina non trovata</h1>
         <p>La pagina che cerchi potrebbe essere stata spostata o non è più disponibile. Puoi ripartire dalla home oppure consultare le informazioni su programma e ammissione.</p>
         <div class="not-found__links">
           <Button href="/">Torna alla home</Button>
-          <Button href="/programma" variant="secondary">Vai al programma</Button>
-          <Button href="/ammissione" variant="secondary">Vai all’ammissione</Button>
+          <Button href="/programma/" variant="secondary">Vai al programma</Button>
+          <Button href="/ammissione/" variant="secondary">Vai all’ammissione</Button>
         </div>
       </div>
     </Section>

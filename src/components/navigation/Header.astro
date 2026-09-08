@@ -4,10 +4,12 @@ interface Props { master: MasterData; currentPath: string }
 const { master, currentPath } = Astro.props;
 const links = [
   { href: '/', label: 'Home' },
+  { href: '/#il-master', label: 'Il Master' },
   { href: '/programma/', label: 'Programma' },
   { href: '/docenti/', label: 'Docenti' },
   { href: '/ammissione/', label: 'Ammissione' },
   { href: '/news/', label: 'News' },
+  { href: '/faq/', label: 'FAQ' },
   { href: '/contatti/', label: 'Contatti' },
 ];
 const normalizedPath = currentPath.replace(/\/$/, '') || '/';
