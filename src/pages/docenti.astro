@@ -18,15 +18,18 @@ const CATEGORY_IDS: Record<(typeof CATEGORY_ORDER)[number], string> = {
   Professionista: 'professionista',
 };
 
-const [masterEntry, contactsEntry, faculty] = await Promise.all([
+const [masterEntry, contactsEntry, editorialEntry, faculty] = await Promise.all([
   getEntry('master', 'master'),
   getEntry('contacts', 'contacts'),
+  getEntry('editorial', 'docenti'),
   getCollection('faculty'),
 ]);
 if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
 if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+if (!editorialEntry) throw new Error('Contenuto obbligatorio mancante: editorial/docenti (src/content/editorial/docenti.md).');
 const master = masterEntry.data;
 const contacts = contactsEntry.data;
+const editorial = editorialEntry.data;
 
 const groups = CATEGORY_ORDER.map((category) => ({
   category,
@@ -34,11 +37,11 @@ const groups = CATEGORY_ORDER.map((category) => ({
   members: sortByOrder(faculty.filter((entry) => entry.data.category === category)),
 })).filter((group) => group.members.length > 0);
 ---
-<BaseLayout title="Docenti" description="Il corpo docente del Master unisce coordinamento scientifico, insegnamento universitario e professioniste e professionisti del settore.">
+<BaseLayout title={editorial.title} description={editorial.description}>
   <Notice message={master.demo_notice} />
   <Header master={master} currentPath={Astro.url.pathname} />
   <main id="main-content" tabindex="-1">
-    <PageHeader title="Docenti" eyebrow="Persone" description="Università, ricerca e impresa al servizio della formazione." />
+    <PageHeader title={editorial.title} eyebrow={editorial.eyebrow} description={editorial.description} />
     {groups.map((group) => (
       <Section labelledBy={`${group.id}-heading`}>
         <SectionHeading id={`${group.id}-heading`} title={group.category} />

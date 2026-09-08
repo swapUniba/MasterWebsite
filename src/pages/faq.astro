@@ -8,16 +8,19 @@ import Section from '../components/layout/Section.astro';
 import SectionHeading from '../components/layout/SectionHeading.astro';
 import PageHeader from '../components/layout/PageHeader.astro';
 
-const [masterEntry, contactsEntry, faqEntry] = await Promise.all([
+const [masterEntry, contactsEntry, editorialEntry, faqEntry] = await Promise.all([
   getEntry('master', 'master'),
   getEntry('contacts', 'contacts'),
+  getEntry('editorial', 'faq'),
   getEntry('faq', 'faq'),
 ]);
 if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
 if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+if (!editorialEntry) throw new Error('Contenuto obbligatorio mancante: editorial/faq (src/content/editorial/faq.md).');
 if (!faqEntry) throw new Error('Contenuto obbligatorio mancante: faq/faq (src/data/faq.yml).');
 const master = masterEntry.data;
 const contacts = contactsEntry.data;
+const editorial = editorialEntry.data;
 
 const DEFAULT_CATEGORY = 'Altro';
 const items = [...faqEntry.data.items].sort((a, b) => a.order - b.order);
@@ -31,11 +34,11 @@ const groups = categories.map((category) => ({
   items: items.filter((item) => (item.category ?? DEFAULT_CATEGORY) === category),
 }));
 ---
-<BaseLayout title="Domande frequenti" description="Risposte alle domande più comuni su ammissione, didattica e costi del Master.">
+<BaseLayout title={editorial.title} description={editorial.description}>
   <Notice message={master.demo_notice} />
   <Header master={master} currentPath={Astro.url.pathname} />
   <main id="main-content" tabindex="-1">
-    <PageHeader title="Domande frequenti" eyebrow="FAQ" description="Le risposte rapide alle domande più frequenti su ammissione, didattica e costi." />
+    <PageHeader title={editorial.title} eyebrow={editorial.eyebrow} description={editorial.description} />
     {groups.map((group, index) => (
       <Section labelledBy={`faq-${index}-heading`} tinted={index % 2 === 1}>
         <SectionHeading id={`faq-${index}-heading`} title={group.category} />
