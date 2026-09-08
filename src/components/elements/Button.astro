@@ -1,0 +1,6 @@
+---
+interface Props { href: string; variant?: 'primary' | 'secondary'; external?: boolean }
+const { href, variant = 'primary', external = false } = Astro.props;
+---
+<a href={href} class:list={['button', { 'button--secondary': variant === 'secondary' }]} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}><slot />{external && <span class="external-label"> (nuova scheda)</span>}</a>
+<style>.external-label { margin-left: .3em; font-size: .8em; }</style>

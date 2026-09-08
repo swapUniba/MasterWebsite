@@ -1,0 +1,57 @@
+---
+import type { MasterData } from '../../content/schemas';
+interface Props { master: MasterData; currentPath: string }
+const { master, currentPath } = Astro.props;
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/programma/', label: 'Programma' },
+  { href: '/docenti/', label: 'Docenti' },
+  { href: '/ammissione/', label: 'Ammissione' },
+  { href: '/news/', label: 'News' },
+  { href: '/contatti/', label: 'Contatti' },
+];
+const normalizedPath = currentPath.replace(/\/$/, '') || '/';
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true">AI<span>+</span></span>
+      <span>{master.short_title}<small>{master.institutions.map((institution) => institution.short_name).join(' · ')}</small></span>
+    </a>
+    <details class="navigation" open>
+      <summary>Menu</summary>
+      <nav aria-label="Navigazione principale">
+        <ul>
+          {links.map(({ href, label }) => (
+            <li><a href={href} aria-current={normalizedPath === (href.replace(/\/$/, '') || '/') ? 'page' : undefined}>{label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+<style>
+  .site-header { background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+  .header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 1.25rem; }
+  .brand { display: inline-flex; align-items: center; gap: .8rem; color: var(--color-primary); text-decoration: none; font-size: .95rem; font-weight: 750; line-height: 1.4; }
+  .brand small { display: block; margin-top: .2rem; font-size: .75rem; font-weight: 500; }
+  .brand-mark { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: var(--radius-sm); background: var(--color-primary); color: white; font-size: 1.2rem; }
+  .brand-mark span { color: var(--color-accent); }
+  .navigation { width: 100%; }
+  summary { cursor: pointer; width: fit-content; padding: .65rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-weight: 650; }
+  nav ul { display: flex; flex-direction: column; list-style: none; padding: 1rem 0 0; gap: .25rem; }
+  nav a { display: block; padding: .65rem .75rem; border-radius: .3rem; color: var(--color-primary); font-size: .9rem; font-weight: 600; text-decoration: none; }
+  nav a:hover, nav a[aria-current="page"] { background: var(--color-background-tinted); color: var(--color-secondary-dark); }
+  nav a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; }
+  @media (min-width: 64rem) {
+    .navigation { width: auto; }
+    nav ul { flex-direction: row; padding: 0; }
+    /* Older browsers retain the native toggle; modern ones keep links visible
+       after closing the mobile menu and resizing to desktop. */
+    @supports selector(::details-content) {
+      summary { display: none; }
+      .navigation::details-content { content-visibility: visible; }
+      .navigation > nav { display: block; }
+    }
+  }
+</style>

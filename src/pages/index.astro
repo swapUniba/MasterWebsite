@@ -1,0 +1,33 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import Notice from '../components/elements/Notice.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Section from '../components/layout/Section.astro';
+
+const [masterEntry, contactsEntry, homeEntry] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+  getEntry('editorial', 'home'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+if (!homeEntry) throw new Error('Contenuto obbligatorio mancante: editorial/home (src/content/editorial/home.md).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+const home = homeEntry.data;
+const { Content } = await render(homeEntry);
+---
+<BaseLayout title={home.title} description={home.description}>
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <PageHeader title={home.heading} eyebrow={home.eyebrow} description={home.description} />
+    <Section>
+      <div class="prose"><Content /></div>
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>

@@ -1,0 +1,23 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+body { margin: 0; font-family: var(--font-sans); color: var(--color-text); background: var(--color-background); font-size: 1rem; line-height: 1.65; }
+h1, h2, h3, p, ul, ol, dl, figure { margin: 0; }
+h1, h2, h3 { line-height: 1.12; text-wrap: balance; }
+h1 { font-size: clamp(2.6rem, 7vw, 5.5rem); letter-spacing: -.045em; }
+h2 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.025em; }
+h3 { font-size: 1.3rem; }
+a { color: var(--color-secondary-dark); text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:hover { text-decoration-thickness: .15em; }
+button, input, textarea, select { font: inherit; }
+img, svg { display: block; max-width: 100%; height: auto; }
+:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 5px; }
+.container { width: min(var(--container-width), calc(100% - 3rem)); margin-inline: auto; }
+.skip-link { position: absolute; top: .75rem; left: 1rem; z-index: 100; padding: .75rem 1rem; background: var(--color-primary); color: white; border-radius: var(--radius-sm); transform: translateY(-200%); }
+.skip-link:focus { transform: translateY(0); }
+@media (max-width: 40rem) {
+  .container { width: calc(100% - 2rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,5 @@
+---
+interface Props { id?: string; labelledBy?: string; tinted?: boolean }
+const { id, labelledBy, tinted = false } = Astro.props;
+---
+<section id={id} aria-labelledby={labelledBy} class:list={['section', { 'section--tinted': tinted }]}><div class="container"><slot /></div></section>

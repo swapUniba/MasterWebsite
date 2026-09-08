@@ -1,0 +1,37 @@
+---
+import type { MasterData, ContactsData } from '../../content/schemas';
+interface Props { master: MasterData; contacts: ContactsData }
+const { master, contacts } = Astro.props;
+---
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-title">{master.short_title}</p>
+      <p>Anno accademico {master.academic_year}</p>
+      <ul class="institutions">
+        {master.institutions.map((institution) => <li><a href={institution.url}>{institution.name}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h2>Contatti</h2>
+      <a href={`mailto:${contacts.general_email}`}>{contacts.general_email}</a>
+      {contacts.general_phone && <p>{contacts.general_phone}</p>}
+    </div>
+    <div>
+      <h2>Collegamenti istituzionali</h2>
+      <ul>{contacts.institutional_links.map((link) => <li><a href={link.url}>{link.label}</a></li>)}</ul>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer { padding-block: 3rem; background: var(--color-primary); color: white; font-size: .9rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem; }
+  .footer-grid > div { min-width: 0; }
+  .footer-title { font-weight: 750; font-size: 1.1rem; margin-bottom: .5rem; }
+  h2 { font-size: 1rem; margin-bottom: 1rem; letter-spacing: 0; }
+  ul { list-style: none; padding: 0; }
+  li + li { margin-top: .6rem; }
+  .institutions { margin-top: 1.25rem; }
+  a { color: white; }
+  @media (max-width: 55rem) { .footer-grid { grid-template-columns: 1fr; } }
+</style>
