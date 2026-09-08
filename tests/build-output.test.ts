@@ -2,7 +2,7 @@ import { access, readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 
 const home = () => readFile('dist/index.html', 'utf8');
-const BASE = '/MasterWebSite';
+const BASE = '/MasterWebsite';
 
 describe('output statico', () => {
   it.each(['programma', 'ammissione', 'docenti', 'faq', 'contatti', 'news'])('genera /%s', async (route) => {
