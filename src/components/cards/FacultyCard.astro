@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../../utils/url';
 
 interface Props { entry: CollectionEntry<'faculty'> }
 const { entry } = Astro.props;
@@ -8,7 +9,7 @@ const initials = faculty.name.trim().split(/\s+/).map((part) => Array.from(part)
 ---
 <article class="faculty-card">
   {faculty.photo
-    ? <img class="faculty-card__avatar" src={faculty.photo} alt={faculty.photo_alt} width="80" height="80" loading="lazy" />
+    ? <img class="faculty-card__avatar" src={withBase(faculty.photo)} alt={faculty.photo_alt} width="80" height="80" loading="lazy" />
     : <span class="faculty-card__avatar" aria-hidden="true">{initials}</span>}
   <h3>{faculty.name}</h3>
   <p>{faculty.role}</p>

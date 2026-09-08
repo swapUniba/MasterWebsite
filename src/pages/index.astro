@@ -15,6 +15,7 @@ import FacultyCard from '../components/cards/FacultyCard.astro';
 import NewsCard from '../components/cards/NewsCard.astro';
 import { sortByOrder, featuredEntries, latestNews } from '../utils/content';
 import { sortByDateAsc } from '../utils/dates';
+import { withBase } from '../utils/url';
 
 const [masterEntry, contactsEntry, homeEntry, deadlinesEntry, courses, faculty, news] = await Promise.all([
   getEntry('master', 'master'),
@@ -53,7 +54,7 @@ const deadlines = sortByDateAsc(deadlinesEntry?.data.items ?? []);
       <Section labelledBy="courses-heading" tinted>
         <div class="preview-heading">
           <SectionHeading id="courses-heading" title="Dal dato grezzo all’AI applicata." eyebrow="Programma" />
-          <a href="/programma/">Tutto il programma <span aria-hidden="true">→</span></a>
+          <a href={withBase('/programma/')}>Tutto il programma <span aria-hidden="true">→</span></a>
         </div>
         <div class="card-grid">{featuredCourses.map((entry) => <CourseCard entry={entry} />)}</div>
       </Section>
@@ -78,7 +79,7 @@ const deadlines = sortByDateAsc(deadlinesEntry?.data.items ?? []);
       <Section labelledBy="faculty-heading">
         <div class="preview-heading">
           <SectionHeading id="faculty-heading" title="Università, ricerca e impresa." eyebrow="Docenti" />
-          <a href="/docenti/">Tutti i docenti <span aria-hidden="true">→</span></a>
+          <a href={withBase('/docenti/')}>Tutti i docenti <span aria-hidden="true">→</span></a>
         </div>
         <div class="card-grid">{featuredFaculty.map((entry) => <FacultyCard entry={entry} />)}</div>
       </Section>
@@ -87,7 +88,7 @@ const deadlines = sortByDateAsc(deadlinesEntry?.data.items ?? []);
       <Section labelledBy="news-heading" tinted>
         <div class="preview-heading">
           <SectionHeading id="news-heading" title="Dal Master." eyebrow="News" />
-          <a href="/news/">Tutte le news <span aria-hidden="true">→</span></a>
+          <a href={withBase('/news/')}>Tutte le news <span aria-hidden="true">→</span></a>
         </div>
         <div class="card-grid">{recentNews.map((entry) => <NewsCard entry={entry} />)}</div>
       </Section>

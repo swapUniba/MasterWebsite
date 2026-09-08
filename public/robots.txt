@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://master.example.it/sitemap-index.xml
+Sitemap: https://petruzzellialessandro.github.io/MasterWebSite/sitemap-index.xml

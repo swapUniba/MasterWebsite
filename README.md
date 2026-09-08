@@ -94,26 +94,26 @@ Perché il workflow possa pubblicare, nel repository su GitHub è necessario imp
 1. **Settings → Pages → Build and deployment → Source**: selezionare **"GitHub Actions"** (non la sorgente legacy "Deploy from a branch"). Con questa impostazione, GitHub Pages pubblica esattamente l'artefatto prodotto dal workflow, senza richiedere un branch `gh-pages` separato.
 2. Verificare che il workflow abbia i permessi già dichiarati in `deploy.yml` (`pages: write`, `id-token: write`): sono sufficienti così come sono, nessuna configurazione aggiuntiva dei permessi del repository è richiesta oltre l'abilitazione della sorgente "GitHub Actions".
 
-**Il sottopercorso `https://<account>.github.io/<repository>/` non è utilizzabile così com'è.** Il repository include `public/CNAME` con il dominio dimostrativo `master.example.it`: al primo deploy GitHub Pages lo imposta come dominio personalizzato e reindirizza l'URL `.github.io` verso quel dominio, che nessuno possiede e il cui DNS non risolve. Il sito risulterebbe quindi irraggiungibile.
+**Il sottopercorso `https://<account>.github.io/<repository>/` richiede una configurazione diversa da quella di un dominio personalizzato.** GitHub Pages serve i progetti senza dominio personalizzato sotto un percorso che include il nome del repository (es. `/MasterWebSite/`), non nella radice del dominio. Astro non riscrive automaticamente i link interni scritti come stringhe assolute (`href="/programma/"`): li riscrive solo se `base` è configurato in `astro.config.mjs` e il codice usa l'helper `withBase()` (`src/utils/url.ts`) per costruirli, cosa che questo repository fa. Le due modalità di pubblicazione supportate:
 
-Prima che il primo push abbia senso, scegliere una delle due opzioni:
+- **(a) Dominio reale (nessun sottopercorso):** un dominio personalizzato serve il sito dalla propria radice, esattamente come il dominio placeholder `master.example.it` con cui il progetto è stato originariamente pensato. Per usarlo: rimuovere (o impostare a `undefined`) `base` in `astro.config.mjs`, impostare `site` sul dominio reale, completare la sostituzione coordinata descritta al punto 8 e configurare il DNS come da punto 9. Con `base` rimosso, `withBase()` diventa un no-op e tutti i link tornano assoluti alla radice.
+- **(b) Sottopercorso `<account>.github.io/<repository>/` (nessun dominio personalizzato):** questo repository è attualmente configurato così — `astro.config.mjs` ha `site: 'https://<account>.github.io'` e `base: '/<repository>'`, e `public/CNAME` non esiste (va lasciato assente: la sua presenza fa impostare a GitHub Pages un dominio personalizzato, causando un redirect verso un dominio che potrebbe non esistere ancora). Se si clona/rinomina il repository, aggiornare `base` in `astro.config.mjs`, `site` con il proprio account, e la riga `Sitemap:` in `public/robots.txt` con lo stesso prefisso, **negli stessi tre punti nello stesso commit** (stesso principio di sincronizzazione del punto 8, applicato a sottopercorso anziché a dominio).
 
-- **(a) Dominio reale:** completare la sostituzione coordinata del dominio descritta al punto 8 (`astro.config.mjs`, `public/CNAME`, `public/robots.txt`) e configurare il DNS come da punto 9. Solo con il DNS attivo il sito è raggiungibile sul dominio definitivo.
-- **(b) Deploy temporaneo senza dominio personalizzato:** eliminare `public/CNAME` prima del push. Il sito viene allora servito sull'URL `https://<account>.github.io/<repository>/`. Non serve nessun'altra modifica: il progetto non configura `base` in Astro, quindi non ci sono link da riscrivere; restano però assoluti al dominio di `astro.config.mjs` i soli `canonical`, Open Graph e sitemap, corretti al momento in cui il dominio definitivo viene impostato al punto 8.
-
-Finché il DNS non è configurato, la verifica di riferimento resta comunque quella locale (`npm run build` seguito da `npm run preview`, oppure `npm run dev`), non il sottopercorso `.github.io/<repository>`.
+La verifica locale (`npm run build` seguito da `npm run preview`, che rispetta lo stesso `base` configurato) riproduce fedelmente il comportamento del sottopercorso pubblicato; usarla prima di ogni push per controllare che stili e link interni funzionino con il prefisso corretto.
 
 ## 8. Dominio personalizzato: sostituzione coordinata
 
-Il repository demo usa il dominio placeholder **`https://master.example.it`**, presente in **tre punti che devono restare sempre sincronizzati**:
+Questa sezione si applica solo se si passa dal sottopercorso `<account>.github.io/<repository>/` (opzione (b) del punto 7, attualmente attiva) a un dominio personalizzato (opzione (a)). Un dominio personalizzato serve il sito dalla propria radice: **non serve e non va configurato `base`** in `astro.config.mjs` in questo caso.
 
-| File | Chiave/valore attuale | Cosa aggiornare |
+Il progetto originariamente usava il dominio placeholder **`https://master.example.it`**, servito dalla radice, presente in **tre punti che devono restare sempre sincronizzati**:
+
+| File | Chiave/valore da impostare | Cosa aggiornare |
 |---|---|---|
-| `astro.config.mjs` | `site: 'https://master.example.it'` | URL assoluto del sito, usato da Astro per generare canonical, Open Graph e sitemap |
-| `public/CNAME` | `master.example.it` | file letto da GitHub Pages per servire il sito sul dominio personalizzato |
-| `public/robots.txt` | `Sitemap: https://master.example.it/sitemap-index.xml` | URL assoluto della sitemap dichiarato ai crawler |
+| `astro.config.mjs` | `site: 'https://<dominio-reale>'`, e rimuovere/impostare a `undefined` la chiave `base` | URL assoluto del sito, usato da Astro per generare canonical, Open Graph e sitemap; `base` va rimosso perché un dominio personalizzato non usa un sottopercorso |
+| `public/CNAME` | `<dominio-reale>` (ricreare il file: nella configurazione attuale a sottopercorso non esiste) | file letto da GitHub Pages per servire il sito sul dominio personalizzato |
+| `public/robots.txt` | `Sitemap: https://<dominio-reale>/sitemap-index.xml` | URL assoluto della sitemap dichiarato ai crawler |
 
-Prima della pubblicazione definitiva, sostituire il dominio demo con quello reale in **tutti e tre i file nello stesso commit**: un disallineamento produce canonical/sitemap che puntano al dominio sbagliato, oppure un CNAME che non corrisponde al dominio effettivamente configurato su GitHub Pages (in quel caso GitHub Pages può disabilitare il dominio personalizzato).
+Aggiornare tutti e tre i file **nello stesso commit**: un disallineamento produce canonical/sitemap che puntano al dominio sbagliato, oppure un CNAME che non corrisponde al dominio effettivamente configurato su GitHub Pages (in quel caso GitHub Pages può disabilitare il dominio personalizzato). Ricordarsi inoltre di rimuovere `base` da `astro.config.mjs` e di verificare che nessun link interno resti prefissato con il vecchio sottopercorso (`npm run build && npm run check:links` lo rileverebbe comunque come destinazione mancante).
 
 Dopo aver aggiornato i tre file, aggiungere il nuovo dominio anche in **Settings → Pages → Custom domain** del repository su GitHub (GitHub propone di norma di scrivere lì lo stesso valore già presente in `public/CNAME`, e li tiene sincronizzati ai commit successivi).
 

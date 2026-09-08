@@ -10,6 +10,7 @@ import PageHeader from '../../components/layout/PageHeader.astro';
 import Breadcrumb from '../../components/layout/Breadcrumb.astro';
 import { publishedNews } from '../../utils/content';
 import { formatItalianDate } from '../../utils/dates';
+import { withBase } from '../../utils/url';
 
 export async function getStaticPaths() {
   const entries = publishedNews(await getCollection('news'));
@@ -39,9 +40,9 @@ const contacts = contactsEntry.data;
       <p class="news-date"><time datetime={news.date.toISOString().slice(0, 10)}>{formatItalianDate(news.date)}</time></p>
     </PageHeader>
     <Section labelledBy="news-title">
-      {news.image && <img class="news-image" src={news.image} alt={news.image_alt} width="1600" height="900" loading="lazy" />}
+      {news.image && <img class="news-image" src={withBase(news.image)} alt={news.image_alt} width="1600" height="900" loading="lazy" />}
       <div class="prose"><Content /></div>
-      <p class="back-link"><a href="/news/">← Torna a tutte le news</a></p>
+      <p class="back-link"><a href={withBase('/news/')}>← Torna a tutte le news</a></p>
     </Section>
   </main>
   <Footer master={master} contacts={contacts} />

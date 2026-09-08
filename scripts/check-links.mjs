@@ -52,9 +52,20 @@ async function destinationExists(root, path) {
   return pathExists(indexPath);
 }
 
-export async function checkBuildLinks(root = 'dist') {
+// Astro's `base` config prefixes every generated URL but is not reflected in
+// the physical `dist/` tree, which GitHub Pages serves at that same prefix
+// implicitly (via the repository name). Strip it before resolving on disk.
+function stripBase(path, base) {
+  if (!base) return path;
+  if (path === base) return '/';
+  if (path.startsWith(`${base}/`)) return path.slice(base.length);
+  return path;
+}
+
+export async function checkBuildLinks(root = 'dist', base = '') {
   const missing = new Set();
   const htmlFiles = await collectHtmlFiles(root);
+  const normalizedBase = base.replace(/\/$/, '');
 
   for (const file of htmlFiles) {
     const html = await readFile(file, 'utf8');
@@ -75,7 +86,7 @@ export async function checkBuildLinks(root = 'dist') {
         continue;
       }
 
-      if (!(await destinationExists(root, path))) missing.add(href);
+      if (!(await destinationExists(root, stripBase(path, normalizedBase)))) missing.add(href);
     }
   }
 
@@ -85,7 +96,8 @@ export async function checkBuildLinks(root = 'dist') {
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
 
 if (isMain) {
-  const missing = await checkBuildLinks('dist');
+  const { default: config } = await import('../astro.config.mjs');
+  const missing = await checkBuildLinks('dist', config.base ?? '');
   if (missing.length > 0) {
     for (const href of missing) console.error(`Destinazione mancante: ${href}`);
     process.exit(1);

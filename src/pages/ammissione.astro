@@ -11,6 +11,7 @@ import Button from '../components/elements/Button.astro';
 import EmptyState from '../components/elements/EmptyState.astro';
 import DeadlineList from '../components/sections/DeadlineList.astro';
 import { sortByDateAsc } from '../utils/dates';
+import { withBase } from '../utils/url';
 
 const [masterEntry, contactsEntry, editorialEntry, deadlinesEntry] = await Promise.all([
   getEntry('master', 'master'),
@@ -58,7 +59,7 @@ const documents = [
     <Section labelledBy="documenti-heading">
       <SectionHeading id="documenti-heading" title="Documenti e candidatura" />
       {documents.length > 0
-        ? <ul class="document-list">{documents.map((doc) => <li><a href={doc.url}>{doc.label}</a></li>)}</ul>
+        ? <ul class="document-list">{documents.map((doc) => <li><a href={withBase(doc.url)}>{doc.label}</a></li>)}</ul>
         : <EmptyState title="Documenti non ancora disponibili" description="Bando ufficiale e brochure saranno pubblicati dagli Atenei." />}
       {master.application_url
         ? <Button href={master.application_url} external>Vai alla candidatura</Button>

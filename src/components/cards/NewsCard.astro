@@ -1,15 +1,16 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { formatItalianDate } from '../../utils/dates';
+import { withBase } from '../../utils/url';
 
 interface Props { entry: CollectionEntry<'news'> }
 const { entry } = Astro.props;
 const news = entry.data;
 ---
 <article class="news-card">
-  {news.image && <img src={news.image} alt={news.image_alt} width="640" height="360" loading="lazy" />}
+  {news.image && <img src={withBase(news.image)} alt={news.image_alt} width="640" height="360" loading="lazy" />}
   <p class="eyebrow"><time datetime={news.date.toISOString().slice(0, 10)}>{formatItalianDate(news.date)}</time></p>
-  <h3><a href={`/news/${entry.id}/`}>{news.title}</a></h3>
+  <h3><a href={withBase(`/news/${entry.id}/`)}>{news.title}</a></h3>
   <p class="news-card__summary">{news.summary}</p>
 </article>
 <style>

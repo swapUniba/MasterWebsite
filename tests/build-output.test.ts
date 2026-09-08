@@ -2,6 +2,7 @@ import { access, readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 
 const home = () => readFile('dist/index.html', 'utf8');
+const BASE = '/MasterWebSite';
 
 describe('output statico', () => {
   it.each(['programma', 'ammissione', 'docenti', 'faq', 'contatti', 'news'])('genera /%s', async (route) => {
@@ -31,7 +32,7 @@ describe('output statico', () => {
 
   it('pubblica canonical e metadati senza un’immagine social inesistente', async () => {
     const html = await home();
-    expect(html).toContain('rel="canonical" href="https://master.example.it/"');
+    expect(html).toContain(`rel="canonical" href="https://petruzzellialessandro.github.io${BASE}/"`);
     expect(html).toContain('name="description"');
     expect(html).toContain('property="og:title"');
     expect(html).not.toContain('property="og:image"');
@@ -45,7 +46,7 @@ describe('output statico', () => {
     expect(header).toMatch(/<summary\b[^>]*>\s*Menu\s*<\/summary>/);
     expect(header.match(/<nav\b/g)).toHaveLength(1);
     expect(header.match(/<ul\b/g)).toHaveLength(1);
-    expect(header).toMatch(/<a\b[^>]*href="\/"[^>]*aria-current="page"/);
+    expect(header).toMatch(new RegExp(`<a\\b[^>]*href="${BASE}/"[^>]*aria-current="page"`));
     expect(header.match(/aria-current="page"/g)).toHaveLength(1);
     expect(header).not.toMatch(/href="#"/);
   });
@@ -90,7 +91,7 @@ describe('output statico', () => {
     const html = await home();
     const hero = html.match(/<section\b[^>]*class="hero"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
     expect(hero).toContain('href="#il-master"');
-    expect(hero).toContain('href="/ammissione/"');
+    expect(hero).toContain(`href="${BASE}/ammissione/"`);
     expect(hero).toMatch(/class="hero__visual"[^>]*aria-hidden="true"/);
     const facts = html.match(/<dl\b[^>]*id="key-facts"[^>]*>[\s\S]*?<\/dl>/)?.[0] ?? '';
     for (const value of ['CFU', '60', 'Durata', '12 mesi', 'Ore complessive', '1.500',
@@ -108,8 +109,8 @@ describe('output statico', () => {
     expect(html.indexOf('Mario Rossi')).toBeLessThan(html.indexOf('Laura Bianchi'));
     expect(html).toMatch(/aria-hidden="true"[^>]*>MR<\/span>/);
     expect(html).toMatch(/aria-hidden="true"[^>]*>LB<\/span>/);
-    expect(html.indexOf('href="/news/presentazione-online/"')).toBeLessThan(html.indexOf('href="/news/apertura-candidature/"'));
-    expect(html).toContain('href="/news/apertura-candidature/"');
+    expect(html.indexOf(`href="${BASE}/news/presentazione-online/"`)).toBeLessThan(html.indexOf(`href="${BASE}/news/apertura-candidature/"`));
+    expect(html).toContain(`href="${BASE}/news/apertura-candidature/"`);
     expect(html).toMatch(/<time\b[^>]*datetime="2027-01-30"[^>]*>30 gennaio 2027<\/time>/);
     const deadlines = html.match(/<ol\b[^>]*class="deadline-list"[^>]*>[\s\S]*?<\/ol>/)?.[0] ?? '';
     expect(deadlines.indexOf('2027-01-15')).toBeGreaterThan(-1);
@@ -123,7 +124,7 @@ describe('output statico', () => {
     for (const page of ['dist/index.html', 'dist/faq/index.html', 'dist/news/index.html', 'dist/404.html']) {
       const header = (await readFile(page, 'utf8')).match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0] ?? '';
       for (const href of ['/', '/#il-master', '/programma/', '/docenti/', '/ammissione/', '/news/', '/faq/', '/contatti/']) {
-        expect(header, `${page} → ${href}`).toContain(`href="${href}"`);
+        expect(header, `${page} → ${href}`).toContain(`href="${BASE}${href}"`);
       }
     }
   });
