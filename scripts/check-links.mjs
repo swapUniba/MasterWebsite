@@ -22,7 +22,9 @@ async function collectHtmlFiles(root) {
 }
 
 function isCheckableHref(href) {
-  if (!href || !href.startsWith('/')) return false;
+  if (!href) return false;
+  if (href.startsWith('#')) return true;
+  if (!href.startsWith('/')) return false;
   if (href.startsWith('//')) return false;
   return true;
 }

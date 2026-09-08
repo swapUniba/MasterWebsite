@@ -19,4 +19,10 @@ describe('link interni del build', () => {
     await writeFile(join(root, 'programma/index.html'), '<h1>Programma</h1>');
     expect(await checkBuildLinks(root)).toEqual([]);
   });
+
+  it('segnala un frammento mancante nella pagina corrente', async () => {
+    const root = await mkdtemp(join(tmpdir(), 'master-links-'));
+    await writeFile(join(root, 'index.html'), '<a href="#nonexistent">Link</a>');
+    expect(await checkBuildLinks(root)).toEqual(['#nonexistent']);
+  });
 });

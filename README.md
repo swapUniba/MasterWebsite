@@ -75,12 +75,13 @@ Chi ha accesso in scrittura a `main` di fatto pubblica direttamente sul sito: va
 
 ## 6. `.pages.yml`: cosa possono modificare gli editor
 
-`.pages.yml` nella root del repository definisce l'intero schema visto da Pages CMS: due sezioni `media` (dove caricare immagini e documenti) e una sezione `content` con due gruppi:
+`.pages.yml` nella root del repository definisce l'intero schema visto da Pages CMS: due sezioni `media` (dove caricare immagini e documenti) e una sezione `content` che contiene due **gruppi** (`type: group`) più tre **collezioni** di primo livello, indipendenti da qualunque gruppo:
 
-- **Impostazioni** (`master`, `deadlines`, `contacts`, `faq`): file YAML singoli in `src/data/`, mappati con `type: file`.
-- **Pagine** (`editorial`, `courses`, `faculty`, `news`): collezioni in `src/content/`, mappate con `type: collection`.
+- Gruppo **`impostazioni`** (`master`, `deadlines`, `contacts`, `faq`): quattro file YAML singoli in `src/data/`, mappati con `type: file`.
+- Gruppo **`pagine`**: contiene una sola voce, `editorial` (le pagine editoriali in `src/content/editorial`, `type: collection`).
+- Collezioni **`courses`**, **`faculty`** e **`news`**: voci separate allo stesso livello di `impostazioni` e `pagine` sotto `content:`, non annidate in nessun gruppo.
 
-Ogni voce di configurazione (i quattro file YAML e la collezione `editorial`) ha `operations: { create: false, rename: false, delete: false }`: gli editor possono **solo modificare i campi esistenti**, non creare nuovi file di impostazioni, non rinominarli né cancellarli, perché sono referenziati per percorso fisso dal codice (`src/content.config.ts`) e da un numero fisso di pagine `.astro`. Le collezioni `courses`, `faculty` e `news` **non hanno questa restrizione**: gli editor possono aggiungere, rinominare ed eliminare voci liberamente, perché il sito le itera dinamicamente (nessuna pagina `.astro` referenzia una entry specifica per nome).
+Ogni voce dentro i due gruppi (i quattro file YAML di `impostazioni` e la collezione `editorial` di `pagine`) ha `operations: { create: false, rename: false, delete: false }`: gli editor possono **solo modificare i campi esistenti**, non creare nuovi file di impostazioni, non rinominarli né cancellarli, perché sono referenziati per percorso fisso dal codice (`src/content.config.ts`) e da un numero fisso di pagine `.astro`. Le collezioni di primo livello `courses`, `faculty` e `news` **non hanno questa restrizione**: gli editor possono aggiungere, rinominare ed eliminare voci liberamente, perché il sito le itera dinamicamente (nessuna pagina `.astro` referenzia una entry specifica per nome).
 
 I campi esposti in `.pages.yml` corrispondono esattamente agli schemi Zod in `src/content/schemas.ts`: qualunque valore non conforme (es. `academic_year` non nel formato `AAAA/AAAA`, email non valida, URL malformato) viene rifiutato in build da `astro check`/dalla validazione dei contenuti, non silenziosamente accettato. Non è possibile, tramite Pages CMS, aggiungere campi non previsti dallo schema, né modificare markup o struttura delle pagine: quella parte resta sempre nei componenti `.astro`, fuori dalla portata degli editor.
 
