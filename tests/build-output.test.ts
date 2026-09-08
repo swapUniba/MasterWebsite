@@ -33,7 +33,7 @@ describe('output statico', () => {
 
   it('pubblica canonical e metadati senza un’immagine social inesistente', async () => {
     const html = await home();
-    expect(html).toContain(`rel="canonical" href="https://petruzzellialessandro.github.io${BASE}/"`);
+    expect(html).toContain(`rel="canonical" href="https://swapuniba.github.io${BASE}/"`);
     expect(html).toContain('name="description"');
     expect(html).toContain('property="og:title"');
     expect(html).not.toContain('property="og:image"');
