@@ -1,0 +1,203 @@
+media:
+  - name: images
+    label: Immagini
+    input: public/images
+    output: /images
+    categories: [image]
+    extensions: [jpg, jpeg, png, webp, avif, svg]
+    rename: safe
+  - name: documents
+    label: Documenti
+    input: public/documents
+    output: /documents
+    categories: [document]
+    extensions: [pdf]
+    rename: safe
+
+content:
+  - name: impostazioni
+    label: Impostazioni
+    type: group
+    items:
+      - name: master
+        label: Master
+        type: file
+        path: src/data/master.yml
+        format: yaml
+        operations: { create: false, rename: false, delete: false }
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: short_title, label: Titolo breve, type: string }
+          - { name: subtitle, label: Sottotitolo, type: string }
+          - { name: summary, label: Sintesi, type: string }
+          - { name: academic_year, label: Anno accademico, type: string }
+          - name: institutions
+            label: Atenei
+            type: object
+            list: true
+            fields:
+              - { name: name, label: Nome, type: string }
+              - { name: short_name, label: Sigla, type: string }
+              - { name: url, label: URL, type: string }
+          - { name: duration, label: Durata, type: string }
+          - { name: cfu, label: CFU, type: number }
+          - { name: total_hours, label: Ore totali, type: number }
+          - { name: places, label: Posti, type: number, required: false }
+          - { name: fee, label: Quota, type: string }
+          - { name: teaching_mode, label: Modalità didattica, type: string }
+          - { name: schedule, label: Calendario, type: string }
+          - { name: location, label: Sede, type: string }
+          - { name: attendance, label: Frequenza, type: string, required: false }
+          - { name: application_url, label: URL candidatura, type: string, required: false }
+          - name: official_call_url
+            label: Bando ufficiale
+            type: file
+            required: false
+            options: { media: documents }
+          - name: brochure_url
+            label: Brochure
+            type: file
+            required: false
+            options: { media: documents }
+          - { name: demo_notice, label: Avviso dimostrativo, type: string, required: false }
+      - name: deadlines
+        label: Scadenze
+        type: file
+        path: src/data/deadlines.yml
+        format: yaml
+        operations: { create: false, rename: false, delete: false }
+        fields:
+          - name: items
+            label: Scadenze
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Titolo, type: string }
+              - { name: date, label: Data, type: date, options: { format: yyyy-MM-dd } }
+              - { name: time, label: Ora, type: string, required: false }
+              - { name: description, label: Descrizione, type: string, required: false }
+              - { name: url, label: URL, type: string, required: false }
+      - name: contacts
+        label: Contatti
+        type: file
+        path: src/data/contacts.yml
+        format: yaml
+        operations: { create: false, rename: false, delete: false }
+        fields:
+          - { name: general_email, label: Email generale, type: string }
+          - { name: general_phone, label: Telefono generale, type: string, required: false }
+          - name: offices
+            label: Sedi
+            type: object
+            list: true
+            fields:
+              - { name: institution, label: Ateneo, type: string }
+              - { name: department, label: Dipartimento, type: string }
+              - { name: address, label: Indirizzo, type: string }
+              - { name: city, label: Città, type: string }
+              - { name: postal_code, label: CAP, type: string }
+              - { name: email, label: Email, type: string, required: false }
+              - { name: website, label: Sito web, type: string, required: false }
+          - name: coordinators
+            label: Coordinatori
+            type: object
+            list: true
+            fields:
+              - { name: name, label: Nome, type: string }
+              - { name: role, label: Ruolo, type: string }
+              - { name: affiliation, label: Affiliazione, type: string }
+              - { name: email, label: Email, type: string, required: false }
+          - name: institutional_links
+            label: Link istituzionali
+            type: object
+            list: true
+            fields:
+              - { name: label, label: Etichetta, type: string }
+              - { name: url, label: URL, type: string }
+      - name: faq
+        label: FAQ
+        type: file
+        path: src/data/faq.yml
+        format: yaml
+        operations: { create: false, rename: false, delete: false }
+        fields:
+          - name: items
+            label: Domande
+            type: object
+            list: true
+            fields:
+              - { name: question, label: Domanda, type: string }
+              - { name: answer, label: Risposta, type: text }
+              - { name: category, label: Categoria, type: string, required: false }
+              - { name: order, label: Ordine, type: number }
+  - name: pagine
+    label: Pagine
+    type: group
+    items:
+      - name: editorial
+        label: Pagine editoriali
+        type: collection
+        path: src/content/editorial
+        format: yaml-frontmatter
+        operations: { create: false, rename: false, delete: false }
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: eyebrow, label: Eyebrow, type: string, required: false }
+          - { name: description, label: Descrizione, type: string }
+          - { name: heading, label: Titolo di sezione, type: string }
+          - { name: body, label: Corpo, type: rich-text }
+  - name: courses
+    label: Corsi
+    type: collection
+    path: src/content/courses
+    format: yaml-frontmatter
+    fields:
+      - { name: code, label: Codice, type: string }
+      - { name: title, label: Titolo, type: string }
+      - { name: summary, label: Sintesi, type: string }
+      - { name: cfu, label: CFU, type: number }
+      - { name: hours, label: Ore, type: number }
+      - { name: semester, label: Semestre, type: string }
+      - { name: lecturers, label: Docenti, type: string, list: true }
+      - { name: order, label: Ordine, type: number }
+      - { name: featured, label: In evidenza, type: boolean }
+      - { name: body, label: Corpo, type: rich-text }
+  - name: faculty
+    label: Docenti
+    type: collection
+    path: src/content/faculty
+    format: yaml-frontmatter
+    fields:
+      - { name: name, label: Nome, type: string }
+      - { name: role, label: Ruolo, type: string }
+      - { name: affiliation, label: Affiliazione, type: string }
+      - { name: category, label: Categoria, type: string }
+      - name: photo
+        label: Foto
+        type: image
+        required: false
+        options: { media: images }
+      - { name: photo_alt, label: Testo alternativo foto, type: string, required: false }
+      - { name: email, label: Email, type: string, required: false }
+      - { name: website, label: Sito web, type: string, required: false }
+      - { name: order, label: Ordine, type: number }
+      - { name: featured, label: In evidenza, type: boolean }
+      - { name: body, label: Corpo, type: rich-text }
+  - name: news
+    label: News
+    type: collection
+    path: src/content/news
+    format: yaml-frontmatter
+    fields:
+      - { name: title, label: Titolo, type: string }
+      - { name: date, label: Data, type: date, options: { format: yyyy-MM-dd } }
+      - { name: summary, label: Sintesi, type: string }
+      - name: image
+        label: Immagine
+        type: image
+        required: false
+        options: { media: images }
+      - { name: image_alt, label: Testo alternativo immagine, type: string, required: false }
+      - { name: featured, label: In evidenza, type: boolean }
+      - { name: draft, label: Bozza, type: boolean }
+      - { name: body, label: Corpo, type: rich-text }
