@@ -1,0 +1,32 @@
+---
+import type { MasterData } from '../../content/schemas';
+
+interface Props { master: MasterData }
+const { master } = Astro.props;
+const facts = [
+  { label: 'CFU', value: master.cfu.toLocaleString('it-IT') },
+  { label: 'Durata', value: master.duration },
+  { label: 'Ore complessive', value: master.total_hours.toLocaleString('it-IT', { useGrouping: true }) },
+  { label: 'Modalità', value: master.teaching_mode },
+  { label: 'Sede', value: master.location },
+];
+---
+<div class="key-facts">
+  <dl id="key-facts" class="container key-facts__grid" aria-label="Il Master in breve">
+    {facts.map(({ label, value }) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+  </dl>
+</div>
+<style>
+  .key-facts { background: var(--color-surface); border-block: 1px solid var(--color-border); }
+  .key-facts__grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .key-facts__grid > div { display: flex; flex-direction: column; padding: 1.75rem 1rem; border-right: 1px solid var(--color-border); overflow-wrap: anywhere; }
+  .key-facts__grid > div:last-child { border-right: 0; }
+  dt { color: var(--color-text-muted); font-size: .85rem; }
+  dd { order: -1; margin: 0 0 .25rem; font-size: 1.5rem; font-weight: 750; }
+  @media (max-width: 40rem) {
+    .key-facts__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .key-facts__grid > div { border-bottom: 1px solid var(--color-border); }
+    .key-facts__grid > div:nth-child(even) { border-right: 0; }
+    .key-facts__grid > div:last-child { grid-column: 1 / -1; border: 0; }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import type { MasterData } from '../../content/schemas';
+import Button from '../elements/Button.astro';
+
+interface Props { master: MasterData }
+const { master } = Astro.props;
+const institutionNames = master.institutions.map((institution) => institution.name).join(' × ');
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div>
+      <p class="eyebrow">{institutionNames}</p>
+      <h1 id="hero-title">{master.subtitle}</h1>
+      <p class="hero__summary">{master.summary}</p>
+      <div class="hero__actions">
+        <Button href="#il-master">Scopri il Master</Button>
+        <Button href="/ammissione" variant="secondary">Come iscriversi</Button>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__ring"><i></i><i></i><i></i></div>
+      <span>AI</span>
+    </div>
+  </div>
+</section>
+<style>
+  .hero { padding-block: clamp(3rem, 7vw, 6rem); background: linear-gradient(128deg, #dff4ef, #f7f4e8 61%, #efe6cf); overflow: hidden; }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); align-items: center; gap: 3rem; }
+  h1 { max-width: 12ch; margin-block: 1.25rem 1.5rem; }
+  .hero__summary { max-width: 44ch; font-size: clamp(1.15rem, 2vw, 1.4rem); }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+  .hero__visual { position: relative; display: grid; place-items: center; min-height: 20rem; }
+  .hero__ring { position: relative; width: min(100%, 19rem); aspect-ratio: 1; border: 1px solid rgb(8 119 111 / .38); border-radius: 50%; }
+  .hero__ring::before { content: ''; position: absolute; inset: 16%; border: 1px dashed rgb(8 119 111 / .45); border-radius: 50%; }
+  .hero__ring i { position: absolute; width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--color-secondary); box-shadow: 0 0 0 .6rem rgb(11 155 144 / .12); }
+  .hero__ring i:nth-child(1) { left: 4%; top: 24%; }
+  .hero__ring i:nth-child(2) { right: -1%; top: 43%; background: var(--color-accent); }
+  .hero__ring i:nth-child(3) { left: 43%; bottom: -3%; }
+  .hero__visual > span { position: absolute; display: grid; place-items: center; width: 7rem; aspect-ratio: 1; border-radius: 2rem; background: var(--color-primary); color: #dff4ef; font-size: 2rem; font-weight: 800; transform: rotate(-8deg); box-shadow: var(--shadow-card); }
+  @media (max-width: 52rem) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .hero__visual { display: none; }
+  }
+</style>

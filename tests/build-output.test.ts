@@ -34,9 +34,70 @@ describe('output statico', () => {
 
   it('rende titolo, avviso e contenuto editoriale dalle entry', async () => {
     const html = await home();
-    expect(html).toMatch(/<h1\b[^>]*>Dai dati alle decisioni<\/h1>/);
+    expect(html).toMatch(/<h1\b[^>]*>Intelligenza che crea valore<\/h1>/);
+    expect(html.match(/<h1\b/g)).toHaveLength(1);
+    expect(html).toContain('Dai dati alle decisioni');
     expect(html).toContain('Sito dimostrativo: contenuti, date e collegamenti sono in fase di aggiornamento.');
     expect(html).toContain('competenze statistiche, informatiche e organizzative');
+  });
+
+  it('renderizza sezioni e contenuti selezionati della homepage', async () => {
+    const html = await home();
+    expect(html).toContain('Intelligenza che crea valore');
+    expect(html).toContain('Perché questo Master');
+    expect(html).toContain('Machine Learning');
+    expect(html).toContain('Prossime scadenze');
+    expect(html).toContain('Mario Rossi');
+    expect(html).toContain('Apertura delle candidature');
+    expect(html).not.toContain('Partnership in preparazione');
+    expect(html).not.toContain('Bozza di collaborazione con imprese del territorio');
+    expect(html).not.toContain('Giulia Verdi');
+  });
+
+  it('associa la presentazione al suo titolo e conserva l’ordine delle sezioni', async () => {
+    const html = await home();
+    const introduction = html.match(/<section\b[^>]*id="il-master"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
+    expect(introduction).toContain('aria-labelledby="master-heading"');
+    expect(introduction).toMatch(/<h2\b[^>]*id="master-heading"[^>]*>Perché questo Master<\/h2>/);
+    const sections = ['hero-title', 'key-facts', 'il-master', 'courses-heading', 'deadlines-heading', 'faculty-heading', 'news-heading', 'cta-heading'];
+    let previous = -1;
+    for (const id of sections) {
+      const position = html.indexOf(`id="${id}"`);
+      expect(position, id).toBeGreaterThan(previous);
+      previous = position;
+    }
+  });
+
+  it('presenta dati chiave semantici e collegamenti utili nella hero', async () => {
+    const html = await home();
+    const hero = html.match(/<section\b[^>]*class="hero"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
+    expect(hero).toContain('href="#il-master"');
+    expect(hero).toContain('href="/ammissione"');
+    expect(hero).toMatch(/class="hero__visual"[^>]*aria-hidden="true"/);
+    const facts = html.match(/<dl\b[^>]*id="key-facts"[^>]*>[\s\S]*?<\/dl>/)?.[0] ?? '';
+    for (const value of ['CFU', '60', 'Durata', '12 mesi', 'Ore complessive', '1.500', 'Modalità', 'Mista', 'Sede', 'Bari']) {
+      expect(facts).toContain(value);
+    }
+    expect(facts.match(/<dt\b/g)).toHaveLength(5);
+    expect(facts.match(/<dd\b/g)).toHaveLength(5);
+  });
+
+  it('ordina corsi, persone e notizie e offre avatar e date leggibili', async () => {
+    const html = await home();
+    expect(html.indexOf('Data Management')).toBeLessThan(html.indexOf('Machine Learning'));
+    expect(html.indexOf('Machine Learning')).toBeLessThan(html.indexOf('Intelligenza Artificiale Generativa'));
+    expect(html.indexOf('Mario Rossi')).toBeLessThan(html.indexOf('Laura Bianchi'));
+    expect(html).toMatch(/aria-hidden="true"[^>]*>MR<\/span>/);
+    expect(html).toMatch(/aria-hidden="true"[^>]*>LB<\/span>/);
+    expect(html.indexOf('href="/news/presentazione-online/"')).toBeLessThan(html.indexOf('href="/news/apertura-candidature/"'));
+    expect(html).toContain('href="/news/apertura-candidature/"');
+    expect(html).toMatch(/<time\b[^>]*datetime="2027-01-30"[^>]*>30 gennaio 2027<\/time>/);
+    const deadlines = html.match(/<ol\b[^>]*class="deadline-list"[^>]*>[\s\S]*?<\/ol>/)?.[0] ?? '';
+    expect(deadlines.indexOf('2027-01-15')).toBeGreaterThan(-1);
+    expect(deadlines.indexOf('2027-01-15')).toBeLessThan(deadlines.indexOf('2027-01-30'));
+    expect(deadlines.indexOf('2027-01-30')).toBeLessThan(deadlines.indexOf('2027-02-15'));
+    expect(deadlines).toContain('17:30');
+    expect(deadlines).toContain('23:59');
   });
 
   it('rende istituzioni e contatti nel footer', async () => {

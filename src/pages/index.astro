@@ -1,16 +1,29 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/navigation/Header.astro';
 import Footer from '../components/navigation/Footer.astro';
 import Notice from '../components/elements/Notice.astro';
-import PageHeader from '../components/layout/PageHeader.astro';
 import Section from '../components/layout/Section.astro';
+import SectionHeading from '../components/layout/SectionHeading.astro';
+import Hero from '../components/sections/Hero.astro';
+import KeyFacts from '../components/sections/KeyFacts.astro';
+import DeadlineList from '../components/sections/DeadlineList.astro';
+import CallToAction from '../components/sections/CallToAction.astro';
+import CourseCard from '../components/cards/CourseCard.astro';
+import FacultyCard from '../components/cards/FacultyCard.astro';
+import NewsCard from '../components/cards/NewsCard.astro';
+import { sortByOrder, featuredEntries, latestNews } from '../utils/content';
+import { sortByDateAsc } from '../utils/dates';
 
-const [masterEntry, contactsEntry, homeEntry] = await Promise.all([
+const [masterEntry, contactsEntry, homeEntry, deadlinesEntry, courses, faculty, news] = await Promise.all([
   getEntry('master', 'master'),
   getEntry('contacts', 'contacts'),
   getEntry('editorial', 'home'),
+  getEntry('deadlines', 'deadlines'),
+  getCollection('courses'),
+  getCollection('faculty'),
+  getCollection('news'),
 ]);
 if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
 if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
@@ -19,15 +32,81 @@ const master = masterEntry.data;
 const contacts = contactsEntry.data;
 const home = homeEntry.data;
 const { Content } = await render(homeEntry);
+const featuredCourses = featuredEntries(sortByOrder(courses)).slice(0, 3);
+const featuredFaculty = featuredEntries(sortByOrder(faculty)).slice(0, 3);
+const recentNews = latestNews(news, 3);
+const deadlines = sortByDateAsc(deadlinesEntry?.data.items ?? []);
 ---
 <BaseLayout title={home.title} description={home.description}>
   <Notice message={master.demo_notice} />
   <Header master={master} currentPath={Astro.url.pathname} />
   <main id="main-content" tabindex="-1">
-    <PageHeader title={home.heading} eyebrow={home.eyebrow} description={home.description} />
-    <Section>
-      <div class="prose"><Content /></div>
+    <Hero master={master} />
+    <KeyFacts master={master} />
+    <Section id="il-master" labelledBy="master-heading">
+      <div class="introduction">
+        <SectionHeading id="master-heading" title="Perché questo Master" eyebrow={home.eyebrow} description={home.heading} />
+        <div class="prose"><Content /></div>
+      </div>
     </Section>
+    {featuredCourses.length > 0 && (
+      <Section labelledBy="courses-heading" tinted>
+        <div class="preview-heading">
+          <SectionHeading id="courses-heading" title="Dal dato grezzo all’AI applicata." eyebrow="Programma" />
+          <a href="/programma/">Tutto il programma <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="card-grid">{featuredCourses.map((entry) => <CourseCard entry={entry} />)}</div>
+      </Section>
+    )}
+    {deadlines.length > 0 && (
+      <Section labelledBy="deadlines-heading" tinted>
+        <div class="schedule-grid">
+          <div>
+            <SectionHeading id="deadlines-heading" title="Prossime scadenze" eyebrow="Organizza il tuo percorso" />
+            <dl class="schedule-facts">
+              <div><dt>Anno accademico</dt><dd>{master.academic_year}</dd></div>
+              <div><dt>Organizzazione didattica</dt><dd>{master.schedule}</dd></div>
+              <div><dt>Modalità e sede</dt><dd>{master.teaching_mode} · {master.location}</dd></div>
+              {master.attendance && <div><dt>Frequenza</dt><dd>{master.attendance}</dd></div>}
+            </dl>
+          </div>
+          <DeadlineList items={deadlines} />
+        </div>
+      </Section>
+    )}
+    {featuredFaculty.length > 0 && (
+      <Section labelledBy="faculty-heading">
+        <div class="preview-heading">
+          <SectionHeading id="faculty-heading" title="Università, ricerca e impresa." eyebrow="Docenti" />
+          <a href="/docenti/">Tutti i docenti <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="card-grid">{featuredFaculty.map((entry) => <FacultyCard entry={entry} />)}</div>
+      </Section>
+    )}
+    {recentNews.length > 0 && (
+      <Section labelledBy="news-heading" tinted>
+        <div class="preview-heading">
+          <SectionHeading id="news-heading" title="Dal Master." eyebrow="News" />
+          <a href="/news/">Tutte le news <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="card-grid">{recentNews.map((entry) => <NewsCard entry={entry} />)}</div>
+      </Section>
+    )}
+    <CallToAction heading="Pronto a costruire il tuo percorso?" text="Consulta requisiti, scadenze e modalità di candidatura." label="Come iscriversi" url="/ammissione" />
   </main>
   <Footer master={master} contacts={contacts} />
 </BaseLayout>
+<style>
+  .introduction { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 3rem; align-items: start; }
+  .preview-heading { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; }
+  .preview-heading :global(.section-heading) { margin-bottom: 0; }
+  .preview-heading > a { flex-shrink: 0; font-weight: 700; }
+  .schedule-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+  .schedule-facts > div + div { margin-top: 1rem; }
+  .schedule-facts dt { color: var(--color-text-muted); font-size: .9rem; }
+  .schedule-facts dd { margin: 0; font-weight: 650; }
+  @media (max-width: 52rem) {
+    .introduction, .schedule-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .preview-heading { align-items: flex-start; flex-direction: column; }
+  }
+</style>

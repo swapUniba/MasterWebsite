@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entry: CollectionEntry<'faculty'> }
+const { entry } = Astro.props;
+const faculty = entry.data;
+const initials = faculty.name.trim().split(/\s+/).map((part) => Array.from(part)[0]).slice(0, 2).join('').toLocaleUpperCase('it-IT');
+---
+<article class="faculty-card">
+  {faculty.photo
+    ? <img class="faculty-card__avatar" src={faculty.photo} alt={faculty.photo_alt} width="80" height="80" loading="lazy" />
+    : <span class="faculty-card__avatar" aria-hidden="true">{initials}</span>}
+  <h3>{faculty.name}</h3>
+  <p>{faculty.role}</p>
+  <p class="faculty-card__affiliation">{faculty.affiliation}</p>
+  <slot />
+</article>
+<style>
+  .faculty-card { padding: 1.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); overflow-wrap: anywhere; }
+  .faculty-card__avatar { display: grid; place-items: center; width: 5rem; height: 5rem; border-radius: 50%; background: linear-gradient(135deg, var(--color-secondary-dark), #17485a); color: white; font-weight: 750; object-fit: cover; }
+  h3 { margin-block: 1rem .75rem; }
+  p { color: var(--color-text-muted); font-size: .95rem; }
+  .faculty-card__affiliation { margin-top: .5rem; }
+</style>

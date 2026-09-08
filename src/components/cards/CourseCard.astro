@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entry: CollectionEntry<'courses'> }
+const { entry } = Astro.props;
+const course = entry.data;
+---
+<article class="course-card">
+  <p class="eyebrow">Modulo {course.code}</p>
+  <h3>{course.title}</h3>
+  <p>{course.summary}</p>
+  <ul aria-label="Impegno didattico"><li>{course.cfu.toLocaleString('it-IT')} CFU</li><li>{course.hours.toLocaleString('it-IT')} ore</li></ul>
+  <slot />
+</article>
+<style>
+  .course-card { padding: 1.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); overflow-wrap: anywhere; }
+  h3 { margin-block: .75rem; }
+  p:not(.eyebrow) { color: var(--color-text-muted); font-size: .95rem; }
+  ul { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; padding: 0; list-style: none; font-size: .85rem; font-weight: 700; }
+  li { padding: .2rem .5rem; border-radius: var(--radius-sm); background: var(--color-background-tinted); }
+</style>
