@@ -1,0 +1,51 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/navigation/Header.astro';
+import Footer from '../../components/navigation/Footer.astro';
+import Notice from '../../components/elements/Notice.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import Breadcrumb from '../../components/layout/Breadcrumb.astro';
+import { publishedNews } from '../../utils/content';
+import { formatItalianDate } from '../../utils/dates';
+
+export async function getStaticPaths() {
+  const entries = publishedNews(await getCollection('news'));
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props { entry: CollectionEntry<'news'> }
+const { entry } = Astro.props;
+const news = entry.data;
+const { Content } = await render(entry);
+
+const [masterEntry, contactsEntry] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+---
+<BaseLayout title={news.title} description={news.summary}>
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'News', href: '/news/' }, { label: news.title }]} />
+    <PageHeader title={news.title} eyebrow="News" description={news.summary}>
+      <p class="news-date"><time datetime={news.date.toISOString().slice(0, 10)}>{formatItalianDate(news.date)}</time></p>
+    </PageHeader>
+    <Section>
+      <div class="prose"><Content /></div>
+      <p class="back-link"><a href="/news/">← Torna a tutte le news</a></p>
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>
+<style>
+  .news-date { margin-top: 1rem; font-weight: 650; }
+  .back-link { margin-top: 2rem; }
+</style>

@@ -1,0 +1,77 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import Notice from '../components/elements/Notice.astro';
+import Section from '../components/layout/Section.astro';
+import SectionHeading from '../components/layout/SectionHeading.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import { sortByOrder } from '../utils/content';
+
+const [masterEntry, contactsEntry, editorialEntry, courses] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+  getEntry('editorial', 'programma'),
+  getCollection('courses'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+if (!editorialEntry) throw new Error('Contenuto obbligatorio mancante: editorial/programma (src/content/editorial/programma.md).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+const editorial = editorialEntry.data;
+const { Content } = await render(editorialEntry);
+
+const orderedCourses = sortByOrder(courses);
+const courseSections = await Promise.all(
+  orderedCourses.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+---
+<BaseLayout title={editorial.title} description={editorial.description}>
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <PageHeader title={editorial.title} eyebrow={editorial.eyebrow} description={editorial.description} />
+    <Section labelledBy="presentazione-heading">
+      <SectionHeading id="presentazione-heading" title={editorial.heading} />
+      <div class="prose"><Content /></div>
+    </Section>
+    <Section labelledBy="moduli-heading" tinted>
+      <SectionHeading id="moduli-heading" title="I moduli del percorso" />
+      <div class="course-list">
+        {courseSections.map(({ entry, Content: CourseContent }) => {
+          const course = entry.data;
+          return (
+            <details class="course-details">
+              <summary>
+                <span class="course-details__code">Modulo {course.code}</span>
+                <span class="course-details__title">{course.title}</span>
+              </summary>
+              <p class="course-details__summary">{course.summary}</p>
+              <dl class="course-details__facts">
+                <div><dt>CFU</dt><dd>{course.cfu.toLocaleString('it-IT')}</dd></div>
+                <div><dt>Ore</dt><dd>{course.hours.toLocaleString('it-IT')}</dd></div>
+                <div><dt>Docenti</dt><dd>{course.lecturers.length > 0 ? course.lecturers.join(', ') : 'Da definire'}</dd></div>
+              </dl>
+              <div class="prose"><CourseContent /></div>
+            </details>
+          );
+        })}
+      </div>
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>
+<style>
+  .course-list { display: grid; gap: 1.25rem; }
+  .course-details { padding: 1.5rem clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+  .course-details summary { cursor: pointer; display: flex; flex-wrap: wrap; align-items: baseline; gap: .75rem; font-weight: 700; }
+  .course-details__code { color: var(--color-secondary-dark); font-size: .8rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+  .course-details__title { font-size: 1.15rem; }
+  .course-details__summary { margin-top: 1rem; color: var(--color-text-muted); }
+  .course-details__facts { display: flex; flex-wrap: wrap; gap: .75rem 2rem; margin-top: 1.25rem; }
+  .course-details__facts dt { color: var(--color-text-muted); font-size: .8rem; }
+  .course-details__facts dd { margin: 0; font-weight: 650; }
+  .course-details .prose { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+</style>

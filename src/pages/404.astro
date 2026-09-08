@@ -1,0 +1,40 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import Notice from '../components/elements/Notice.astro';
+import Section from '../components/layout/Section.astro';
+import Button from '../components/elements/Button.astro';
+
+const [masterEntry, contactsEntry] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+---
+<BaseLayout title="Pagina non trovata" description="La pagina richiesta non è disponibile. Torna alla home o consulta programma e ammissione.">
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <Section>
+      <div class="not-found">
+        <h1>Pagina non trovata</h1>
+        <p>La pagina che cerchi potrebbe essere stata spostata o non è più disponibile. Puoi ripartire dalla home oppure consultare le informazioni su programma e ammissione.</p>
+        <div class="not-found__links">
+          <Button href="/">Torna alla home</Button>
+          <Button href="/programma" variant="secondary">Vai al programma</Button>
+          <Button href="/ammissione" variant="secondary">Vai all’ammissione</Button>
+        </div>
+      </div>
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>
+<style>
+  .not-found { max-width: 40rem; }
+  .not-found__links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+</style>

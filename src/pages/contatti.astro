@@ -1,0 +1,79 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import Notice from '../components/elements/Notice.astro';
+import Section from '../components/layout/Section.astro';
+import SectionHeading from '../components/layout/SectionHeading.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+
+const [masterEntry, contactsEntry, editorialEntry] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+  getEntry('editorial', 'contatti'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+if (!editorialEntry) throw new Error('Contenuto obbligatorio mancante: editorial/contatti (src/content/editorial/contatti.md).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+const editorial = editorialEntry.data;
+const { Content } = await render(editorialEntry);
+---
+<BaseLayout title={editorial.title} description={editorial.description}>
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <PageHeader title={editorial.title} eyebrow={editorial.eyebrow} description={editorial.description} />
+    <Section labelledBy="orientamento-heading">
+      <SectionHeading id="orientamento-heading" title={editorial.heading} />
+      <div class="prose"><Content /></div>
+      <p class="general-contact">
+        <a href={`mailto:${contacts.general_email}`}>{contacts.general_email}</a>
+        {contacts.general_phone && <span> · {contacts.general_phone}</span>}
+      </p>
+    </Section>
+    <Section labelledBy="coordinatori-heading" tinted>
+      <SectionHeading id="coordinatori-heading" title="Coordinatori" />
+      <ul class="people-list">
+        {contacts.coordinators.map((coordinator) => (
+          <li>
+            <p class="people-list__name">{coordinator.name}</p>
+            <p>{coordinator.role} · {coordinator.affiliation}</p>
+            {coordinator.email && <a href={`mailto:${coordinator.email}`}>{coordinator.email}</a>}
+          </li>
+        ))}
+      </ul>
+    </Section>
+    <Section labelledBy="sedi-heading">
+      <SectionHeading id="sedi-heading" title="Sedi" />
+      <div class="card-grid">
+        {contacts.offices.map((office) => (
+          <article class="office-card">
+            <h3>{office.institution}</h3>
+            <p>{office.department}</p>
+            <p>{office.address}, {office.postal_code} {office.city}</p>
+            {office.email && <a href={`mailto:${office.email}`}>{office.email}</a>}
+            {office.website && <p><a href={office.website}>{office.website}</a></p>}
+          </article>
+        ))}
+      </div>
+    </Section>
+    <Section labelledBy="link-heading" tinted>
+      <SectionHeading id="link-heading" title="Collegamenti istituzionali" />
+      <ul class="link-list">
+        {contacts.institutional_links.map((link) => <li><a href={link.url}>{link.label}</a></li>)}
+      </ul>
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>
+<style>
+  .general-contact { margin-top: 1.5rem; font-weight: 650; }
+  .people-list { display: grid; gap: 1.5rem; padding: 0; list-style: none; }
+  .people-list__name { font-weight: 700; }
+  .office-card { padding: 1.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+  .office-card h3 { margin-bottom: .5rem; }
+  .link-list { display: flex; flex-wrap: wrap; gap: 1rem; padding: 0; list-style: none; font-weight: 650; }
+</style>

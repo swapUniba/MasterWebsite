@@ -1,0 +1,76 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import Notice from '../components/elements/Notice.astro';
+import Section from '../components/layout/Section.astro';
+import SectionHeading from '../components/layout/SectionHeading.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Button from '../components/elements/Button.astro';
+import EmptyState from '../components/elements/EmptyState.astro';
+import DeadlineList from '../components/sections/DeadlineList.astro';
+import { sortByDateAsc } from '../utils/dates';
+
+const [masterEntry, contactsEntry, editorialEntry, deadlinesEntry] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+  getEntry('editorial', 'ammissione'),
+  getEntry('deadlines', 'deadlines'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+if (!editorialEntry) throw new Error('Contenuto obbligatorio mancante: editorial/ammissione (src/content/editorial/ammissione.md).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+const editorial = editorialEntry.data;
+const { Content } = await render(editorialEntry);
+const deadlines = sortByDateAsc(deadlinesEntry?.data.items ?? []);
+
+const documents = [
+  master.official_call_url && { label: 'Bando ufficiale', url: master.official_call_url },
+  master.brochure_url && { label: 'Brochure del Master', url: master.brochure_url },
+].filter((doc): doc is { label: string; url: string } => Boolean(doc));
+---
+<BaseLayout title={editorial.title} description={editorial.description}>
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <PageHeader title={editorial.title} eyebrow={editorial.eyebrow} description={editorial.description} />
+    <Section labelledBy="requisiti-heading">
+      <SectionHeading id="requisiti-heading" title={editorial.heading} />
+      <div class="prose"><Content /></div>
+    </Section>
+    <Section labelledBy="quota-heading" tinted>
+      <div class="admission-grid">
+        <div>
+          <SectionHeading id="quota-heading" title="Quota di iscrizione" />
+          <p class="admission-fee">{master.fee}</p>
+        </div>
+        <div>
+          <h3 id="procedura-heading">Procedura e scadenze</h3>
+          {deadlines.length > 0
+            ? <DeadlineList items={deadlines} />
+            : <EmptyState title="Scadenze non ancora pubblicate" description="Il calendario di ammissione sarà comunicato dagli Atenei." />}
+        </div>
+      </div>
+    </Section>
+    <Section labelledBy="documenti-heading">
+      <SectionHeading id="documenti-heading" title="Documenti e candidatura" />
+      {documents.length > 0
+        ? <ul class="document-list">{documents.map((doc) => <li><a href={doc.url}>{doc.label}</a></li>)}</ul>
+        : <EmptyState title="Documenti non ancora disponibili" description="Bando ufficiale e brochure saranno pubblicati dagli Atenei." />}
+      {master.application_url
+        ? <Button href={master.application_url} external>Vai alla candidatura</Button>
+        : <EmptyState title="Candidatura non ancora aperta" description="Il link per candidarsi sarà attivato all’apertura del bando." />}
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>
+<style>
+  .admission-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
+  .admission-fee { font-size: 1.5rem; font-weight: 750; }
+  h3 { margin-bottom: 1rem; }
+  .document-list { display: grid; gap: .75rem; margin-bottom: 1.5rem; padding: 0; list-style: none; font-weight: 650; }
+  @media (max-width: 52rem) { .admission-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+</style>

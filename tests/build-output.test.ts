@@ -1,9 +1,27 @@
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 
 const home = () => readFile('dist/index.html', 'utf8');
 
 describe('output statico', () => {
+  it.each(['programma', 'ammissione', 'docenti', 'faq', 'contatti', 'news'])('genera /%s', async (route) => {
+    await expect(access(`dist/${route}/index.html`)).resolves.toBeUndefined();
+  });
+
+  it('genera la pagina 404 nel percorso previsto da GitHub Pages', async () => {
+    await expect(access('dist/404.html')).resolves.toBeUndefined();
+  });
+
+  it('genera news pubblicate ma non bozze', async () => {
+    await expect(access('dist/news/apertura-candidature/index.html')).resolves.toBeUndefined();
+    await expect(access('dist/news/bozza-partnership/index.html')).rejects.toThrow();
+  });
+
+  it('usa details nativi per FAQ e corsi', async () => {
+    expect(await readFile('dist/faq/index.html', 'utf8')).toContain('<details');
+    expect(await readFile('dist/programma/index.html', 'utf8')).toContain('<details');
+  });
+
   it('include lingua e uno skip link verso il contenuto principale', async () => {
     const html = await home();
     expect(html).toContain('<html lang="it"');

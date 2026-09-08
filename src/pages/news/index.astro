@@ -1,0 +1,36 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/navigation/Header.astro';
+import Footer from '../../components/navigation/Footer.astro';
+import Notice from '../../components/elements/Notice.astro';
+import Section from '../../components/layout/Section.astro';
+import PageHeader from '../../components/layout/PageHeader.astro';
+import EmptyState from '../../components/elements/EmptyState.astro';
+import NewsCard from '../../components/cards/NewsCard.astro';
+import { publishedNews } from '../../utils/content';
+
+const [masterEntry, contactsEntry, newsEntries] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+  getCollection('news'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+const news = publishedNews(newsEntries).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="News" description="Aggiornamenti dimostrativi su candidature, eventi e attività del Master.">
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <PageHeader title="News" eyebrow="Dal Master" description="Le ultime comunicazioni dimostrative sul percorso." />
+    <Section>
+      {news.length > 0
+        ? <div class="card-grid">{news.map((entry) => <NewsCard entry={entry} />)}</div>
+        : <EmptyState title="Nessuna news pubblicata" description="Le comunicazioni saranno pubblicate qui non appena disponibili." />}
+    </Section>
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>

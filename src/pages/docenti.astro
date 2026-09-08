@@ -1,0 +1,50 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/navigation/Header.astro';
+import Footer from '../components/navigation/Footer.astro';
+import Notice from '../components/elements/Notice.astro';
+import Section from '../components/layout/Section.astro';
+import SectionHeading from '../components/layout/SectionHeading.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import FacultyCard from '../components/cards/FacultyCard.astro';
+import { sortByOrder } from '../utils/content';
+
+const CATEGORY_ORDER = ['Coordinamento', 'Comitato scientifico', 'Docente', 'Professionista'] as const;
+const CATEGORY_IDS: Record<(typeof CATEGORY_ORDER)[number], string> = {
+  Coordinamento: 'coordinamento',
+  'Comitato scientifico': 'comitato-scientifico',
+  Docente: 'docente',
+  Professionista: 'professionista',
+};
+
+const [masterEntry, contactsEntry, faculty] = await Promise.all([
+  getEntry('master', 'master'),
+  getEntry('contacts', 'contacts'),
+  getCollection('faculty'),
+]);
+if (!masterEntry) throw new Error('Contenuto obbligatorio mancante: master/master (src/data/master.yml).');
+if (!contactsEntry) throw new Error('Contenuto obbligatorio mancante: contacts/contacts (src/data/contacts.yml).');
+const master = masterEntry.data;
+const contacts = contactsEntry.data;
+
+const groups = CATEGORY_ORDER.map((category) => ({
+  category,
+  id: CATEGORY_IDS[category],
+  members: sortByOrder(faculty.filter((entry) => entry.data.category === category)),
+})).filter((group) => group.members.length > 0);
+---
+<BaseLayout title="Docenti" description="Il corpo docente del Master unisce coordinamento scientifico, insegnamento universitario e professioniste e professionisti del settore.">
+  <Notice message={master.demo_notice} />
+  <Header master={master} currentPath={Astro.url.pathname} />
+  <main id="main-content" tabindex="-1">
+    <PageHeader title="Docenti" eyebrow="Persone" description="Università, ricerca e impresa al servizio della formazione." />
+    {groups.map((group) => (
+      <Section labelledBy={`${group.id}-heading`}>
+        <SectionHeading id={`${group.id}-heading`} title={group.category} />
+        <div class="card-grid">{group.members.map((entry) => <FacultyCard entry={entry} />)}</div>
+      </Section>
+    ))}
+  </main>
+  <Footer master={master} contacts={contacts} />
+</BaseLayout>
