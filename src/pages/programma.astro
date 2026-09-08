@@ -52,7 +52,7 @@ const courseSections = await Promise.all(
               <dl class="course-details__facts">
                 <div><dt>CFU</dt><dd>{course.cfu.toLocaleString('it-IT')}</dd></div>
                 <div><dt>Ore</dt><dd>{course.hours.toLocaleString('it-IT')}</dd></div>
-                <div><dt>Semestre</dt><dd>{course.semester}</dd></div>
+                {course.semester !== 'Altro' && <div><dt>Semestre</dt><dd>{course.semester}</dd></div>}
                 <div><dt>Docenti</dt><dd>{course.lecturers.length > 0 ? course.lecturers.join(', ') : 'Da definire'}</dd></div>
               </dl>
               <div class="prose"><CourseContent /></div>

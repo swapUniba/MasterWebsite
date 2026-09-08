@@ -1,10 +1,12 @@
 ---
 title: "Master AI & Data Science"
-eyebrow: "Percorso post-laurea"
-description: "Una formazione interdisciplinare per progettare soluzioni data-driven responsabili."
-heading: "Dai dati alle decisioni"
+eyebrow: "Formazione avanzata"
+description: "Un Master congiunto di II livello dedicato a Intelligenza Artificiale, Machine Learning, Data Science e sistemi data-driven."
+heading: "Competenze avanzate per l’innovazione data-driven"
 ---
 
-Il Master propone un ambiente di apprendimento in cui competenze statistiche, informatiche e organizzative dialogano con casi d’uso concreti.
+Il Master forma professionisti capaci di progettare, sviluppare e gestire soluzioni basate su Intelligenza Artificiale, Machine Learning, Data Science e sistemi data-driven.
 
-Le informazioni operative pubblicate in questo sito hanno valore dimostrativo e saranno aggiornate con gli atti ufficiali.
+Il percorso integra raccolta, gestione e modellazione dei dati, sviluppo di algoritmi, analisi avanzata e progettazione di architetture intelligenti. Affronta inoltre data governance, explainable AI, sicurezza, privacy, impatto etico e conformità normativa.
+
+Le competenze acquisite trovano applicazione in aziende tecnologiche, industria e servizi, sanità, finanza, pubblica amministrazione, ricerca, startup innovative e consulenza.

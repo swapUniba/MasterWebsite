@@ -1,21 +1,29 @@
 items:
   - question: "Quali requisiti sono previsti per l’ammissione?"
-    answer: "Queste informazioni sono dimostrative: i requisiti definitivi saranno indicati nel bando ufficiale."
+    answer: "È richiesta una laurea specialistica o magistrale di qualsiasi classe, oppure una laurea del vecchio ordinamento conseguita prima della riforma del 1999."
     category: "Ammissione"
     order: 10
-  - question: "Come si presenta la candidatura?"
-    answer: "La procedura descritta è dimostrativa; modalità e documenti saranno confermati alla pubblicazione dell’avviso."
+  - question: "Come si svolge la selezione?"
+    answer: "La valutazione assegna fino a 40 punti ai titoli, 30 punti al colloquio o alla lettera motivazionale e 30 punti al curriculum. Sono considerati anche esperienze professionali e pubblicazioni."
     category: "Ammissione"
     order: 20
   - question: "Le lezioni sono compatibili con l’attività lavorativa?"
-    answer: "La formula weekend è una previsione dimostrativa e il calendario effettivo sarà comunicato dagli Atenei."
+    answer: "La frequenza è part-time: le attività sono previste dal venerdì pomeriggio per l’intera giornata del sabato, in modalità mista tra presenza e collegamento sincrono online."
     category: "Didattica"
     order: 30
-  - question: "Sono previste attività progettuali?"
-    answer: "Il project work è presentato a scopo dimostrativo; organizzazione e partner saranno definiti nel programma ufficiale."
+  - question: "Qual è la frequenza minima richiesta?"
+    answer: "Per sostenere l’esame finale è richiesta la presenza ad almeno l’80% delle ore complessive."
     category: "Didattica"
     order: 40
   - question: "Qual è la quota di iscrizione?"
-    answer: "L’importo mostrato sul sito è dimostrativo e non costituisce un dato vincolante; farà fede il bando ufficiale."
+    answer: "La quota è di € 3.500, suddivisa in una prima rata da € 2.000 e una seconda rata da € 1.500."
     category: "Costi"
     order: 50
+  - question: "È possibile iscriversi a singoli moduli?"
+    answer: "Sono disponibili 10 posti per la partecipazione ai moduli 5 e 7. La quota prevista per ciascun modulo è di € 1.500."
+    category: "Didattica"
+    order: 60
+  - question: "Sono ammessi uditori?"
+    answer: "No, il percorso non prevede l’ammissione di uditori."
+    category: "Ammissione"
+    order: 70

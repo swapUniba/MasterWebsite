@@ -13,8 +13,9 @@ describe('output statico', () => {
     await expect(access('dist/404.html')).resolves.toBeUndefined();
   });
 
-  it('genera news pubblicate ma non bozze', async () => {
-    await expect(access('dist/news/apertura-candidature/index.html')).resolves.toBeUndefined();
+  it('non genera pagine per le news demo rimosse', async () => {
+    await expect(access('dist/news/apertura-candidature/index.html')).rejects.toThrow();
+    await expect(access('dist/news/presentazione-online/index.html')).rejects.toThrow();
     await expect(access('dist/news/bozza-partnership/index.html')).rejects.toThrow();
   });
 
@@ -51,26 +52,26 @@ describe('output statico', () => {
     expect(header).not.toMatch(/href="#"/);
   });
 
-  it('rende titolo, avviso e contenuto editoriale dalle entry', async () => {
+  it('rende titolo e contenuto editoriale importati senza avviso demo', async () => {
     const html = await home();
-    expect(html).toMatch(/<h1\b[^>]*>Intelligenza che crea valore<\/h1>/);
+    expect(html).toMatch(/<h1\b[^>]*>Progettare soluzioni intelligenti, valorizzare i dati<\/h1>/);
     expect(html.match(/<h1\b/g)).toHaveLength(1);
-    expect(html).toContain('Dai dati alle decisioni');
-    expect(html).toContain('Sito dimostrativo: contenuti, date e collegamenti sono in fase di aggiornamento.');
-    expect(html).toContain('competenze statistiche, informatiche e organizzative');
+    expect(html).toContain('Competenze avanzate per l’innovazione data-driven');
+    expect(html).not.toContain('Sito dimostrativo');
+    expect(html).toContain('data governance, explainable AI, sicurezza, privacy');
   });
 
   it('renderizza sezioni e contenuti selezionati della homepage', async () => {
     const html = await home();
-    expect(html).toContain('Intelligenza che crea valore');
+    expect(html).toContain('Progettare soluzioni intelligenti, valorizzare i dati');
     expect(html).toContain('Perché questo Master');
-    expect(html).toContain('Machine Learning');
+    expect(html).toContain('Allineamento – Basi di Programmazione');
     expect(html).toContain('Prossime scadenze');
-    expect(html).toContain('Mario Rossi');
-    expect(html).toContain('Apertura delle candidature');
-    expect(html).not.toContain('Partnership in preparazione');
-    expect(html).not.toContain('Bozza di collaborazione con imprese del territorio');
-    expect(html).not.toContain('Giulia Verdi');
+    expect(html).toContain('Cataldo Musto');
+    expect(html).toContain('Emanazione prevista del bando di ammissione');
+    expect(html).not.toContain('Mario Rossi');
+    expect(html).not.toContain('Laura Bianchi');
+    expect(html).not.toContain('Bozza di collaborazione');
   });
 
   it('associa la presentazione al suo titolo e conserva l’ordine delle sezioni', async () => {
@@ -78,7 +79,7 @@ describe('output statico', () => {
     const introduction = html.match(/<section\b[^>]*id="il-master"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
     expect(introduction).toContain('aria-labelledby="master-heading"');
     expect(introduction).toMatch(/<h2\b[^>]*id="master-heading"[^>]*>Perché questo Master<\/h2>/);
-    const sections = ['hero-title', 'key-facts', 'il-master', 'courses-heading', 'deadlines-heading', 'faculty-heading', 'news-heading', 'cta-heading'];
+    const sections = ['hero-title', 'key-facts', 'il-master', 'courses-heading', 'deadlines-heading', 'faculty-heading', 'cta-heading'];
     let previous = -1;
     for (const id of sections) {
       const position = html.indexOf(`id="${id}"`);
@@ -94,30 +95,27 @@ describe('output statico', () => {
     expect(hero).toContain(`href="${BASE}/ammissione/"`);
     expect(hero).toMatch(/class="hero__visual"[^>]*aria-hidden="true"/);
     const facts = html.match(/<dl\b[^>]*id="key-facts"[^>]*>[\s\S]*?<\/dl>/)?.[0] ?? '';
-    for (const value of ['CFU', '60', 'Durata', '12 mesi', 'Ore complessive', '1.500',
-      'Posti disponibili', '30', 'Modalità', 'Mista', 'Sede', 'Bari']) {
+    for (const value of ['CFU', '60', 'Durata', 'Annuale', 'Ore complessive', '1.500',
+      'Posti disponibili', '50', 'Modalità', 'Mista', 'Sede', 'Dipartimento di Informatica, Bari']) {
       expect(facts).toContain(value);
     }
     expect(facts.match(/<dt\b/g)).toHaveLength(6);
     expect(facts.match(/<dd\b/g)).toHaveLength(6);
   });
 
-  it('ordina corsi, persone e notizie e offre avatar e date leggibili', async () => {
+  it('ordina corsi, persone e scadenze e offre avatar e date leggibili', async () => {
     const html = await home();
-    expect(html.indexOf('Data Management')).toBeLessThan(html.indexOf('Machine Learning'));
-    expect(html.indexOf('Machine Learning')).toBeLessThan(html.indexOf('Intelligenza Artificiale Generativa'));
-    expect(html.indexOf('Mario Rossi')).toBeLessThan(html.indexOf('Laura Bianchi'));
-    expect(html).toMatch(/aria-hidden="true"[^>]*>MR<\/span>/);
-    expect(html).toMatch(/aria-hidden="true"[^>]*>LB<\/span>/);
-    expect(html.indexOf(`href="${BASE}/news/presentazione-online/"`)).toBeLessThan(html.indexOf(`href="${BASE}/news/apertura-candidature/"`));
-    expect(html).toContain(`href="${BASE}/news/apertura-candidature/"`);
-    expect(html).toMatch(/<time\b[^>]*datetime="2027-01-30"[^>]*>30 gennaio 2027<\/time>/);
+    expect(html.indexOf('Allineamento – Basi di Programmazione')).toBeLessThan(html.indexOf('Strumenti e Risorse per AI e Data Science'));
+    expect(html.indexOf('Strumenti e Risorse per AI e Data Science')).toBeLessThan(html.indexOf('Data Management e Business Intelligence'));
+    expect(html.indexOf('Cataldo Musto')).toBeLessThan(html.indexOf('Pasquale Lops'));
+    expect(html).toMatch(/aria-hidden="true"[^>]*>CM<\/span>/);
+    expect(html).toMatch(/aria-hidden="true"[^>]*>PL<\/span>/);
+    expect(html).not.toContain(`href="${BASE}/news/apertura-candidature/"`);
+    expect(html).not.toContain(`href="${BASE}/news/presentazione-online/"`);
+    expect(html).toMatch(/<time\b[^>]*datetime="2026-10-01"[^>]*>1 ottobre 2026<\/time>/);
     const deadlines = html.match(/<ol\b[^>]*class="deadline-list"[^>]*>[\s\S]*?<\/ol>/)?.[0] ?? '';
-    expect(deadlines.indexOf('2027-01-15')).toBeGreaterThan(-1);
-    expect(deadlines.indexOf('2027-01-15')).toBeLessThan(deadlines.indexOf('2027-01-30'));
-    expect(deadlines.indexOf('2027-01-30')).toBeLessThan(deadlines.indexOf('2027-02-15'));
-    expect(deadlines).toContain('17:30');
-    expect(deadlines).toContain('23:59');
+    expect(deadlines.indexOf('2026-10-01')).toBeGreaterThan(-1);
+    expect(deadlines.indexOf('2026-10-01')).toBeLessThan(deadlines.indexOf('2027-03-01'));
   });
 
   it('raggiunge dalla navigazione ogni pagina pubblicata e la sezione introduttiva', async () => {
@@ -131,20 +129,35 @@ describe('output statico', () => {
 
   it('rende il titolo ufficiale del Master nel footer', async () => {
     const footer = (await home()).match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
-    expect(footer).toContain('Master di II livello in Intelligenza Artificiale e Data Science');
+    expect(footer).toContain('Master Congiunto di II Livello in Intelligenza Artificiale e Data Science');
   });
 
-  it('espone semestre dei moduli, contatti e biografie dei docenti', async () => {
+  it('non inventa semestri ed espone contatti e incarichi dei docenti', async () => {
     const programma = await readFile('dist/programma/index.html', 'utf8');
-    expect(programma).toMatch(/<dt\b[^>]*>Semestre<\/dt>/);
-    expect(programma).toContain('Primo semestre');
+    expect(programma).not.toMatch(/<dt\b[^>]*>Semestre<\/dt>/);
+    expect(programma).not.toContain('>Altro<');
     const docenti = await readFile('dist/docenti/index.html', 'utf8');
-    expect(docenti).toContain('href="mailto:mario.rossi@demo-uniba.it"');
-    expect(docenti).toContain('progettazione di sistemi informativi');
+    expect(docenti).toContain('href="mailto:cataldo.musto@uniba.it"');
+    expect(docenti).toContain('Coordinatore del Master e responsabile dei moduli 1 e 9');
+  });
+
+  it('espone solo i responsabili dei moduli e rimuove tutti gli altri docenti', async () => {
+    const programma = await readFile('dist/programma/index.html', 'utf8');
+    const docenti = await readFile('dist/docenti/index.html', 'utf8');
+    for (const name of ['Cataldo Musto', 'Pierpaolo Basile', 'Fedelucio Narducci', 'Tommaso Di Noia',
+      'Marco De Gemmis', 'Vito Walter Anelli', 'Pasquale Lops', 'Giovanni Semeraro']) {
+      expect(programma, name).toContain(name);
+      expect(docenti, name).toContain(name);
+    }
+    for (const name of ['Gennaro Vessio', 'Vincenzo Patruno', 'Gianvito Pio', 'Claudio Pomo',
+      'Giovanna Castellano', 'Paolo Buono', 'Marco Polignano', 'Morena Ragone', 'Michelangelo Ceci']) {
+      expect(programma, name).not.toContain(name);
+      expect(docenti, name).not.toContain(name);
+    }
   });
 
   it('assegna un nome accessibile a ogni sezione generata', async () => {
-    for (const page of ['dist/404.html', 'dist/news/index.html', 'dist/news/apertura-candidature/index.html']) {
+    for (const page of ['dist/404.html', 'dist/news/index.html']) {
       const html = await readFile(page, 'utf8');
       const sections = html.match(/<section\b[^>]*class="section[^"]*"[^>]*>/g) ?? [];
       expect(sections.length, page).toBeGreaterThan(0);
@@ -157,7 +170,7 @@ describe('output statico', () => {
     const footer = html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
     expect(footer).toContain('Università degli Studi di Bari Aldo Moro');
     expect(footer).toContain('Politecnico di Bari');
-    expect(footer).toContain('href="mailto:master.ai-data@demo-uniba.it"');
+    expect(footer).toContain('href="mailto:cataldo.musto@uniba.it"');
     expect(footer).toContain('href="https://www.uniba.it"');
     expect(footer).toContain('href="https://www.poliba.it"');
   });

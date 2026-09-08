@@ -1,10 +1,10 @@
 ---
 title: "Programma"
 eyebrow: "Didattica"
-description: "Moduli, laboratori e project work per affrontare l’intero ciclo di vita del dato."
-heading: "Una traiettoria formativa applicata"
+description: "Nove moduli didattici, tirocinio ed esame finale per un percorso complessivo di 60 CFU."
+heading: "Dalla programmazione ai sistemi intelligenti"
 ---
 
-Il percorso alterna basi metodologiche, strumenti per la gestione dei dati e laboratori dedicati ai modelli di apprendimento automatico.
+Il piano didattico comprende nove moduli per circa 40 CFU, con 241 ore di lezioni frontali e 89 ore di esercitazioni. Le attività sono erogate in italiano, prevalentemente in presenza, con una componente sincrona online.
 
-La struttura didattica è una proposta dimostrativa: calendario, docenze e articolazione definitiva saranno confermati nel programma ufficiale.
+Il percorso è completato da 350 ore di tirocinio, equivalenti a 14 CFU, e da un esame finale da 6 CFU. Sono previste verifiche intermedie sui primi cinque moduli, con test scritto e valutazione di idoneità.

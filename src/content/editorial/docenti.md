@@ -1,10 +1,10 @@
 ---
 title: "Docenti"
 eyebrow: "Persone"
-description: "Il corpo docente del Master unisce coordinamento scientifico, insegnamento universitario e professioniste e professionisti del settore."
-heading: "Le persone che animano il percorso"
+description: "Coordinamento, Comitato Tecnico Scientifico e docenti del piano didattico."
+heading: "Competenze accademiche e professionali"
 ---
 
-Coordinamento, comitato scientifico, docenti e professionisti condividono la responsabilità didattica del Master.
+Il Master è coordinato dal professor Cataldo Musto del Dipartimento di Informatica dell’Università degli Studi di Bari Aldo Moro.
 
-I profili pubblicati in questa pagina sono dimostrativi e saranno sostituiti con l’elenco ufficiale del corpo docente.
+Il Comitato Tecnico Scientifico riunisce componenti di UniBa, Politecnico di Bari e del mondo professionale. Il piano didattico coinvolge inoltre docenti universitari ed esperti esterni.

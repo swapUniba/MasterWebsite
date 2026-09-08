@@ -1,7 +1,7 @@
-title: "Master di II livello in Intelligenza Artificiale e Data Science"
+title: "Master Congiunto di II Livello in Intelligenza Artificiale e Data Science"
 short_title: "Master AI & Data Science"
-subtitle: "Intelligenza che crea valore"
-summary: "Un percorso interdisciplinare dove ricerca, applicazione e impresa si incontrano."
+subtitle: "Progettare soluzioni intelligenti, valorizzare i dati"
+summary: "Competenze avanzate in Intelligenza Artificiale, Machine Learning e Data Science per guidare progetti data-driven in organizzazioni complesse."
 academic_year: "2026/2027"
 institutions:
   - name: "Università degli Studi di Bari Aldo Moro"
@@ -10,13 +10,12 @@ institutions:
   - name: "Politecnico di Bari"
     short_name: "PoliBa"
     url: "https://www.poliba.it"
-duration: "12 mesi"
+duration: "Annuale"
 cfu: 60
 total_hours: 1500
-places: 30
-fee: "€ 3.500"
+places: 50
+fee: "€ 3.500 (I rata € 2.000; II rata € 1.500)"
 teaching_mode: "Mista"
-schedule: "Formula weekend"
-location: "Bari"
+schedule: "Venerdì pomeriggio e sabato"
+location: "Dipartimento di Informatica, Bari"
 attendance: "Frequenza minima dell’80%"
-demo_notice: "Sito dimostrativo: contenuti, date e collegamenti sono in fase di aggiornamento."

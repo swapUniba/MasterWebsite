@@ -1,10 +1,11 @@
 ---
-name: Cataldo Musto
-role: Professore associato di Data Analytics
-affiliation: Università degli Studi di Bari
-category: Comitato scientifico
-email: cataldo.musto@demo-poliba.it
-order: 21
+name: "Cataldo Musto"
+role: "Professore associato"
+affiliation: "Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro"
+category: "Coordinamento"
+email: "cataldo.musto@uniba.it"
+order: 10
 featured: true
 ---
-Profilo dimostrativo con esperienza in modellazione statistica, machine learning e valutazione di sistemi predittivi.
+
+Coordinatore del Master e responsabile dei moduli 1 e 9.

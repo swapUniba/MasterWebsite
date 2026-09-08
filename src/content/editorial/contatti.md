@@ -1,10 +1,10 @@
 ---
 title: "Contatti"
-eyebrow: "Orientamento"
-description: "I riferimenti per ricevere informazioni sul percorso e sulle attività di orientamento."
-heading: "Parliamo del tuo progetto formativo"
+eyebrow: "Informazioni"
+description: "I riferimenti del coordinamento e delle strutture universitarie coinvolte nel Master."
+heading: "Contatta il coordinamento"
 ---
 
-Il team di orientamento accompagna candidate e candidati nella lettura del percorso e nella preparazione dei materiali.
+Per informazioni sul Master è possibile contattare il coordinatore, professor Cataldo Musto, presso il Dipartimento di Informatica dell’Università degli Studi di Bari Aldo Moro.
 
-Recapiti, persone e appuntamenti indicati in questa pagina sono dimostrativi e verranno aggiornati con i contatti istituzionali.
+Le attività didattiche hanno sede presso il Campus universitario di via E. Orabona 4 a Bari e coinvolgono UniBa e il Politecnico di Bari.
