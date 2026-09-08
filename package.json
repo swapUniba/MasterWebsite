@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:links": "node scripts/check-links.mjs",
-    "validate": "npm run check && npm test && npm run build && npm run check:links"
+    "validate": "npm run check && npm run build && npm test && npm run check:links"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "yaml": "^2.9.0"
   }
 }

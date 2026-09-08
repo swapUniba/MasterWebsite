@@ -44,7 +44,11 @@ content:
           - { name: total_hours, label: Ore totali, type: number }
           - { name: places, label: Posti, type: number, required: false }
           - { name: fee, label: Quota, type: string }
-          - { name: teaching_mode, label: Modalità didattica, type: string }
+          - name: teaching_mode
+            label: Modalità didattica
+            type: select
+            options:
+              values: ['In presenza', 'Online', 'Mista']
           - { name: schedule, label: Calendario, type: string }
           - { name: location, label: Sede, type: string }
           - { name: attendance, label: Frequenza, type: string, required: false }
@@ -157,7 +161,11 @@ content:
       - { name: summary, label: Sintesi, type: string }
       - { name: cfu, label: CFU, type: number }
       - { name: hours, label: Ore, type: number }
-      - { name: semester, label: Semestre, type: string }
+      - name: semester
+        label: Semestre
+        type: select
+        options:
+          values: ['Primo semestre', 'Secondo semestre', 'Annuale', 'Altro']
       - { name: lecturers, label: Docenti, type: string, list: true }
       - { name: order, label: Ordine, type: number }
       - { name: featured, label: In evidenza, type: boolean }
@@ -171,7 +179,11 @@ content:
       - { name: name, label: Nome, type: string }
       - { name: role, label: Ruolo, type: string }
       - { name: affiliation, label: Affiliazione, type: string }
-      - { name: category, label: Categoria, type: string }
+      - name: category
+        label: Categoria
+        type: select
+        options:
+          values: ['Coordinamento', 'Comitato scientifico', 'Docente', 'Professionista']
       - name: photo
         label: Foto
         type: image
