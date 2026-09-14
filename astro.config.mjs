@@ -2,8 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://swapUniba.github.io',
-  base: '/MasterWebsite',
+  site: 'https://masteriads.com',
   output: 'static',
   integrations: [sitemap()],
 });

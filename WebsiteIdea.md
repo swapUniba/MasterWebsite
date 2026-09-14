@@ -560,10 +560,10 @@ Usa il deploy ufficiale tramite GitHub Actions.
 
 Il deploy deve avvenire automaticamente quando viene effettuato un push su `main`.
 
-Prevedi un dominio custom, per esempio:
+Usa il dominio custom:
 
 ```text
-master.example.it
+masteriads.com
 ```
 
 Imposta la configurazione Astro in modo compatibile con un custom domain.
@@ -574,7 +574,7 @@ Aggiungi:
 public/CNAME
 ```
 
-con un dominio placeholder facilmente modificabile.
+con il dominio `masteriads.com`.
 
 Non configurare un `base` path relativo al repository se il sito viene pubblicato tramite custom domain.
 
