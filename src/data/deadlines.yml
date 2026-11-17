@@ -1,7 +1,7 @@
 items:
-  - title: "Emanazione prevista del bando di ammissione"
-    date: "2026-10-01"
-    description: "Data presunta indicata nella documentazione del Master."
-  - title: "Avvio previsto del corso"
-    date: "2027-03-01"
-    description: "Data presunta indicata nella documentazione del Master."
+  - title: Emanazione prevista del bando di ammissione
+    date: 2026-12-01
+    description: Data presunta indicata nella documentazione del Master.
+  - title: Avvio previsto del corso
+    date: 2027-04-02
+    description: Data presunta indicata nella documentazione del Master.
