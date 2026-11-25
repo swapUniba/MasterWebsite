@@ -8,7 +8,7 @@ photo_alt: Foto - Walter Anelli
 order: 20
 featured: false
 ---
-- Componente del Comitato Tecnico Scientifico
+- Componente del Comitato Tecnico-Scientifico
 - **Responsabile del Modulo 6** (Data Visualization e Visual Analytics)
 - Docente per il Modulo 7 (**Recommender Systems Avanzati e Laboratorio**)
 
