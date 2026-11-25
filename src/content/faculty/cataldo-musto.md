@@ -9,4 +9,4 @@ email: cataldo.musto@uniba.it
 order: 10
 featured: true
 ---
-Coordinatore del Master e responsabile dei moduli 1 e 9.
+**Coordinatore del Master** e responsabile dei Moduli 1 e 9.
