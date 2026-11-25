@@ -5,7 +5,7 @@ affiliation: Dipartimento di Ingegneria Elettrica e dell’Informazione, Politec
 category: Comitato scientifico
 photo: /images/20302312202052-6resized-e1660202549932-263x216.jpg
 photo_alt: Foto - Fedelucio Narducci
-order: 50
+order: 70
 featured: false
 ---
 **Componente del Comitato Tecnico Scientifico** e responsabile del Modulo 3.
