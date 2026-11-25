@@ -8,4 +8,5 @@ photo_alt: Foto - Michelangelo Ceci
 order: 127
 featured: false
 ---
-Docente per il Modulo 3 (**Basi di Dati e SQL**)
+- Docente per il Modulo 3 (**Basi di Dati e SQL**)
+
