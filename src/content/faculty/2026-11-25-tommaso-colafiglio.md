@@ -8,4 +8,5 @@ photo_alt: Foto - Tommaso Colafiglio
 order: 130
 featured: false
 ---
-**Docente per il Modulo 9**: Casi d'Uso e Applicazioni per AI e Data Science
+- Docente per il Modulo 9 (**Brain-Computer Interfaces e Laboratorio**)
+
