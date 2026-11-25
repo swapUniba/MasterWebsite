@@ -1,5 +1,5 @@
 ---
-name: Marco De Gemmis
+name: Marco de Gemmis
 role: Professore associato
 affiliation: Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro
 category: Comitato scientifico
