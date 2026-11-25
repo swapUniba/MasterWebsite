@@ -2,7 +2,7 @@
 code: "6"
 title: Data Visualization e Visual Analytics
 summary: Visualizzazione dei dati e tecniche di Visual Analytics.
-cfu: 2
+cfu: 2.5
 hours: 21
 semester: Altro
 lecturers:
