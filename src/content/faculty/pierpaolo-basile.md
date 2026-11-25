@@ -1,6 +1,6 @@
 ---
 name: Pierpaolo Basile
-role: Professore associato
+role: Professore Associato
 affiliation: Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro
 category: Docente
 photo: /images/pierbasile.png
