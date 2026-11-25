@@ -8,4 +8,4 @@ photo_alt: Foto - Fedelucio Narducci
 order: 50
 featured: false
 ---
-Componente del Comitato Tecnico Scientifico e responsabile del modulo 3.
+**Componente del Comitato Tecnico Scientifico** e responsabile del Modulo 3.
