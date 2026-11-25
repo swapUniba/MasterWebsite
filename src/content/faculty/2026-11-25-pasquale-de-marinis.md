@@ -8,4 +8,5 @@ photo_alt: Foto - Pasquale De Marinis
 order: 140
 featured: false
 ---
-**Docente per il Modulo 1**: Basi di Programmazione
+- Docente per il Modulo 1 (**Basi di Programmazione Strutturata**)
+
