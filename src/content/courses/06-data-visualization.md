@@ -1,18 +1,17 @@
 ---
 code: "6"
-title: "Data Visualization e Visual Analytics"
-summary: "Visualizzazione dei dati e tecniche di Visual Analytics."
-cfu: 2.36
+title: Data Visualization e Visual Analytics
+summary: Visualizzazione dei dati e tecniche di Visual Analytics.
+cfu: 2
 hours: 21
-semester: "Altro"
-lecturers: ["Vito Walter Anelli"]
+semester: Altro
+lecturers:
+  - Paolo Buono, Gennaro De Feo
 order: 60
 featured: false
 ---
+Il modulo prevede 13 ore di lezione frontale e 8 ore di esercitazione.
 
-Il modulo prevede 13 ore di lezioni frontali e 8 ore di esercitazioni.
+- **Principi, metodi e tecniche di visualizzazione dei dati,** con attenzione alla progettazione e alla validazione di visualizzazioni efficaci. (Paolo Buono)
+- **Business Analytics con Qlik:** modello associativo, approccio DAR e applicazione a casi d’uso *(Gennaro De Feo)*
 
-- **Responsabile:** Vito Walter Anelli
-- **Modalità:** 70% in presenza e attività sincrone online
-- **Sede:** Dipartimento di Informatica
-- **Lingua:** italiano
