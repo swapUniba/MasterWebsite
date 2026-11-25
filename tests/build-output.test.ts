@@ -1,9 +1,3 @@
-
-
-
-
-
-
 import { access, readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 
@@ -100,3 +94,100 @@ describe('output statico', () => {
     let previous = -1;
     for (const id of sections) {
       const position = html.indexOf(`id="${id}"`);
+           expect(position, id).toBeGreaterThan(previous);
+      previous = position;
+    }
+  });
+
+  it('presenta dati chiave semantici e collegamenti utili nella hero', async () => {
+    const html = await home();
+    const hero = html.match(/<section\b[^>]*class="hero"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? '';
+    expect(hero).toContain('href="#il-master"');
+    expect(hero).toContain('href="/ammissione/"');
+    expect(hero).toMatch(/class="hero__visual"[^>]*aria-hidden="true"/);
+    const facts = html.match(/<dl\b[^>]*id="key-facts"[^>]*>[\s\S]*?<\/dl>/)?.[0] ?? '';
+    const labels = facts.match(/<dt\b/g) ?? [];
+    const values = facts.match(/<dd\b/g) ?? [];
+    expect(labels.length).toBeGreaterThan(0);
+    expect(values).toHaveLength(labels.length);
+  });
+
+  it('rende docenti e scadenze con avatar accessibili e date leggibili e ordinate', async () => {
+    const html = await home();
+    const facultyCards = getCards(html, 'faculty-card');
+    expect(facultyCards.length).toBeGreaterThan(0);
+    for (const card of facultyCards) {
+      expect(card).toMatch(/<h3\b[^>]*>[^<]+<\/h3>/);
+      const image = card.match(/<img\b[^>]*>/)?.[0];
+      if (image) {
+        expect(image).toMatch(/\balt="[^"]+"/);
+      } else {
+        expect(card).toMatch(/<span\b[^>]*aria-hidden="true"[^>]*>[^<]+<\/span>/);
+      }
+    }
+
+    const deadlines = html.match(/<ol\b[^>]*class="deadline-list"[^>]*>[\s\S]*?<\/ol>/)?.[0] ?? '';
+    const times = [...deadlines.matchAll(/<time\b[^>]*datetime="(\d{4}-\d{2}-\d{2})"[^>]*>([^<]+)<\/time>/g)];
+    expect(times.length).toBeGreaterThan(0);
+    const dates = times.map((match) => match[1]);
+    expect(dates).toEqual([...dates].sort());
+    for (const match of times) {
+      expect(Number.isNaN(Date.parse(match[1]))).toBe(false);
+      expect(match[2].trim()).toMatch(/\d{1,2}\s+\p{L}+\s+\d{4}/u);
+    }
+  });
+
+  it('raggiunge dalla navigazione ogni pagina pubblicata e la sezione introduttiva', async () => {
+    for (const page of ['dist/index.html', 'dist/faq/index.html', 'dist/news/index.html', 'dist/404.html']) {
+      const header = (await readFile(page, 'utf8')).match(/<header\b[^>]*>[\s\S]*?<\/header>/)?.[0] ?? '';
+      for (const href of ['/', '/#il-master', '/programma/', '/docenti/', '/ammissione/', '/news/', '/faq/', '/contatti/']) {
+        expect(header, `${page} -> ${href}`).toContain(`href="${href}"`);
+      }
+    }
+  });
+
+  it('rende il titolo ufficiale del Master nel footer', async () => {
+    const footer = (await home()).match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
+    expect(footer).toContain('Master Congiunto di II Livello in Intelligenza Artificiale e Data Science');
+  });
+
+  it('mostra programma e contatti dei docenti senza dati di esempio', async () => {
+    const programma = await readFile('dist/programma/index.html', 'utf8');
+    const docenti = await readFile('dist/docenti/index.html', 'utf8');
+    expect(programma).not.toMatch(/<dt\b[^>]*>Semestre<\/dt>/);
+    expect(programma).not.toContain('>Altro<');
+    expect(programma).toContain('<details');
+    expect(docenti).toMatch(/href="mailto:[^"\s]+@[^"\s]+"/);
+  });
+
+  it('mantiene coerenti le anteprime dei corsi e dei docenti con le pagine complete', async () => {
+    const html = await home();
+    const programma = await readFile('dist/programma/index.html', 'utf8');
+    const docenti = await readFile('dist/docenti/index.html', 'utf8');
+    const courseTitles = getCardTitles(html, 'course-card');
+    const facultyNames = getCardTitles(html, 'faculty-card');
+    expect(courseTitles.length).toBeGreaterThan(0);
+    expect(facultyNames.length).toBeGreaterThan(0);
+    for (const title of courseTitles) expect(programma, title).toContain(title);
+    for (const name of facultyNames) expect(docenti, name).toContain(name);
+  });
+
+  it('assegna un nome accessibile a ogni sezione generata', async () => {
+    for (const page of ['dist/404.html', 'dist/news/index.html']) {
+      const html = await readFile(page, 'utf8');
+      const sections = html.match(/<section\b[^>]*class="section[^"]*"[^>]*>/g) ?? [];
+      expect(sections.length, page).toBeGreaterThan(0);
+      for (const section of sections) expect(section, page).toContain('aria-labelledby=');
+    }
+  });
+
+  it('rende istituzioni e contatti nel footer', async () => {
+    const html = await home();
+    const footer = html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/)?.[0] ?? '';
+    expect(footer).toContain('Università degli Studi di Bari Aldo Moro');
+    expect(footer).toContain('Politecnico di Bari');
+    expect(footer).toMatch(/href="mailto:[^"\s]+@[^"\s]+"/);
+    expect(footer).toContain('href="https://www.uniba.it"');
+    expect(footer).toContain('href="https://www.poliba.it"');
+  });
+});
