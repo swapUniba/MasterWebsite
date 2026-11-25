@@ -8,5 +8,5 @@ photo_alt: Foto - Valerio Morfino
 order: 60
 featured: false
 ---
-- **Componente Esterno del Comitato Tecnico Scientifico**.
+- **Componente Esterno del Comitato Tecnico-Scientifico**.
 
