@@ -8,6 +8,6 @@ photo_alt: Foto - Fedelucio Narducci
 order: 70
 featured: false
 ---
-- Componente del Comitato Tecnico Scientifico
+- Componente del Comitato Tecnico-Scientifico
 - **Responsabile del Modulo 3** (Data Management e Business Intelligence)
 
