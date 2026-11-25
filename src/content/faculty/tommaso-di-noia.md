@@ -5,7 +5,7 @@ affiliation: Dipartimento di Ingegneria Elettrica e dell’Informazione, Politec
 category: Comitato scientifico
 photo: /images/tdinoia-506699224-263x216.png
 photo_alt: Foto - Tommaso Di Noia
-order: 60
+order: 40
 featured: false
 ---
 Componente del Comitato Tecnico Scientifico e responsabile del modulo 4.
