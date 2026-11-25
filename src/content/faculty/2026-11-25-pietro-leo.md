@@ -5,6 +5,7 @@ affiliation: IBM
 category: Docente
 photo: /images/screenshot-2026-11-25-alle-184453.png
 photo_alt: Foto - Piero Leo
+order: 151
 featured: false
 ---
 - Docente per il Modulo 9 (**AI e Data Science nell'impresa**)
