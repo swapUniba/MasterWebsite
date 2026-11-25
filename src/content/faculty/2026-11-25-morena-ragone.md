@@ -2,7 +2,7 @@
 name: Morena Ragone
 role: Responsabile Transizione Digitale nella PA
 affiliation: Regione Puglia
-category: Professionista
+category: Docente
 photo: /images/1718217084936.jpeg
 photo_alt: Foto - Morena Ragone
 order: 180
