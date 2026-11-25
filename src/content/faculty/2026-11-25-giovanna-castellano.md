@@ -8,4 +8,5 @@ photo_alt: Foto - Giovanna Castellano
 order: 120
 featured: false
 ---
-**Docente per il Modulo 5**: Deep Learning ed AI Generativa
+- Docente per il Modulo 5 **(Introduzione alla Computer Vision)**
+
