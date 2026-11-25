@@ -1,18 +1,17 @@
 ---
 code: "2"
-title: "Strumenti e Risorse per AI e Data Science"
-summary: "Strumenti e risorse a supporto delle attività di Intelligenza Artificiale e Data Science."
-cfu: 2.17
+title: Strumenti e Risorse per AI e Data Science
+summary: Strumenti e risorse a supporto delle attività di Intelligenza
+  Artificiale e Data Science.
+cfu: 2
 hours: 18
-semester: "Altro"
-lecturers: ["Pierpaolo Basile"]
+semester: Altro
+lecturers:
+  - Vincenzo Patruno
 order: 20
 featured: true
 ---
+Il modulo prevede 13 ore di lezione frontale e 5 ore di esercitazione.
 
-Il modulo prevede 13 ore di lezioni frontali e 5 ore di esercitazioni.
+- **Acquisizione, integrazione e analisi di dati** organici, amministrativi, statistici e open data mediante fonti web, scraping, API e strumenti di AI (Vincenzo Patruno, ISTAT)
 
-- **Responsabile:** Pierpaolo Basile
-- **Modalità:** 70% in presenza e attività sincrone online
-- **Sede:** Dipartimento di Informatica
-- **Lingua:** italiano
