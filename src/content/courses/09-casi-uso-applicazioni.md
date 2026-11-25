@@ -13,7 +13,7 @@ featured: false
 ---
 Il modulo prevede 42 ore di lezione frontale e 14 ore di esercitazione.
 
-- **Analisi dei bias e degli stereotipi nei sistemi di IA:** esercitazioni pratiche**** *(Marco de Gemmis).*
+- **Analisi dei bias e degli stereotipi nei sistemi di IA:** esercitazioni pratiche *(Marco de Gemmis).*
 - **Fondamenti delle Brain-Computer Interfaces** e applicazioni *(Tommaso Colafiglio)*.
 - **AI e Sostenibilità: introduzione e casi d'uso** *(Giuseppe Spillo)*.
 - **AI per la Bioinformatica: applicazioni** *(Gianvito Pio)*.
