@@ -2,7 +2,7 @@
 name: Pietro Leo
 role: Executive Architect
 affiliation: IBM
-category: Professionista
+category: Docente
 photo: /images/screenshot-2026-11-25-alle-184453.png
 photo_alt: Foto - Piero Leo
 featured: false
