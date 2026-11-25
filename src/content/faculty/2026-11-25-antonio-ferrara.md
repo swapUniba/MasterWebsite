@@ -8,4 +8,5 @@ photo_alt: Foto - Antonio Ferrara
 order: 150
 featured: false
 ---
-Docente per il Modulo 4: **Analisi Statistica dei Dati**
+- Docente per il Modulo 4 (**Analisi Statistica dei Dati)**
+
