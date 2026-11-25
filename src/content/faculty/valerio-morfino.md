@@ -1,9 +1,11 @@
 ---
 name: Valerio Morfino
-role: Componente del Comitato Tecnico Scientifico
+role: Italy Enterprise Data & Intelligence GTM Lead
 affiliation: DXC Technology
 category: Comitato scientifico
+photo: /images/1605979042267.jpeg
 order: 60
 featured: false
 ---
-Componente esterno del Comitato Tecnico Scientifico.
+- **Componente Esterno del Comitato Tecnico Scientifico**.
+
