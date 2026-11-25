@@ -8,4 +8,4 @@ photo_alt: Foto - Giuseppe Spillo
 order: 191
 featured: false
 ---
-Docente per il Modulo 1 e per il Modulo 9
+Docente per il Modulo 1 (**Basi di Programmazione Python**) e per il Modulo 9 (**AI e Sostenibilità**)
