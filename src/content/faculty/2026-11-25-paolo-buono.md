@@ -8,4 +8,5 @@ photo_alt: Foto - Paolo Buono
 order: 106
 featured: false
 ---
-Docente per il Modulo 6 (**Tecniche di Data Visualization**)
+- Docente per il Modulo 6 (**Tecniche di Data Visualization**)
+
