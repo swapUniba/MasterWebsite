@@ -8,4 +8,4 @@ photo_alt: Foto - Walter Anelli
 order: 20
 featured: false
 ---
-Componente del Comitato Tecnico Scientifico e responsabile del modulo 6.
+**Componente del Comitato Tecnico Scientifico,** Responsabile del modulo 6 e Docente per il Modulo 7 (NLP e Sistemi Intelligenti)
