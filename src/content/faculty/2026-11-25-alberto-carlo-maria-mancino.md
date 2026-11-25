@@ -1,0 +1,10 @@
+---
+name: Alberto Carlo Maria Mancino
+role: "Ricercatore Post-Doc "
+affiliation: Politecnico di Bari
+category: Docente
+photo: /images/foto-profilo-263x216.jpg
+photo_alt: Foto - Alberto Mancino
+featured: false
+---
+Docente del Modulo 5: **Deep Learning ed AI Generativa**
