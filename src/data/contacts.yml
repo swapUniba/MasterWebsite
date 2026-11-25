@@ -1,24 +1,24 @@
-general_email: "cataldo.musto@uniba.it"
+general_email: cataldo.musto@uniba.it
 offices:
-  - institution: "Università degli Studi di Bari Aldo Moro"
-    department: "Dipartimento di Informatica"
-    address: "Via E. Orabona, 4"
-    city: "Bari"
+  - institution: Università degli Studi di Bari Aldo Moro
+    department: Dipartimento di Informatica
+    address: Via E. Orabona 4
+    city: Bari
     postal_code: "70125"
-    website: "https://www.uniba.it"
-  - institution: "Politecnico di Bari"
-    department: "Dipartimento di Ingegneria Elettrica e dell’Informazione"
-    address: "Via E. Orabona, 4"
-    city: "Bari"
+    website: https://www.uniba.it
+  - institution: Politecnico di Bari
+    department: Dipartimento di Ingegneria Elettrica e dell’Informazione
+    address: Via E. Orabona, 4
+    city: Bari
     postal_code: "70125"
-    website: "https://www.poliba.it"
+    website: https://www.poliba.it
 coordinators:
-  - name: "Cataldo Musto"
-    role: "Coordinatore del Master"
-    affiliation: "Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro"
-    email: "cataldo.musto@uniba.it"
+  - name: Cataldo Musto
+    role: Coordinatore del Master
+    affiliation: Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro
+    email: cataldo.musto@uniba.it
 institutional_links:
-  - label: "Portale UniBa"
-    url: "https://www.uniba.it"
-  - label: "Portale PoliBa"
-    url: "https://www.poliba.it"
+  - label: Portale UniBa
+    url: https://www.uniba.it
+  - label: Portale PoliBa
+    url: https://www.poliba.it
