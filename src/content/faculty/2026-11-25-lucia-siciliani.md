@@ -5,7 +5,8 @@ affiliation: Universita degli Studi di Bari
 category: Docente
 photo: /images/lucsici.png
 photo_alt: Foto - Lucia Sicliani
-order: 180
+order: 185
 featured: false
 ---
-**Docente per il Modulo 5**: Deep Learning ed AI Generativa
+- Docente per il Modulo 5 (**Natural Language Processing e Laboratorio**)
+
