@@ -8,4 +8,5 @@ photo_alt: Foto - Raffaele Scaringi
 order: 181
 featured: false
 ---
-**Docente per il Modulo 5**: Deep Learning ed AI Generativa
+- Docente per il Modulo 5 (**Laboratorio di Computer Vision**)
+
