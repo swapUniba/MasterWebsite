@@ -5,7 +5,7 @@ affiliation: Dipartimento di Ingegneria Elettrica e dell’Informazione, Politec
 category: Comitato scientifico
 photo: /images/senza-titolo-1-1045973506-240x216.jpg
 photo_alt: Foto - Walter Anelli
-order: 70
+order: 20
 featured: false
 ---
 Componente del Comitato Tecnico Scientifico e responsabile del modulo 6.
