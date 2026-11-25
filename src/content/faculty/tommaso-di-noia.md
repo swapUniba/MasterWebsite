@@ -8,6 +8,6 @@ photo_alt: Foto - Tommaso Di Noia
 order: 40
 featured: false
 ---
-- Componente del Comitato Tecnico Scientifico
+- Componente del Comitato Tecnico-Scientifico
 - **Responsabile del modulo 4** (Analisi Statistica dei Dati)
 
