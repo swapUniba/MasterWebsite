@@ -8,4 +8,5 @@ photo_alt: Foto - Gabriella Casalino
 order: 110
 featured: false
 ---
-**Docente per il Modulo 1**: Basi di Programmazione
+- Docente per il Modulo 1 **(Pensiero Computazionale e Problem Solving)**
+
