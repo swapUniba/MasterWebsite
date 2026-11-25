@@ -8,7 +8,7 @@ photo_alt: Foto - Gianni Semeraro
 order: 80
 featured: false
 ---
-- Componente del Comitato Tecnico Scientifico
+- Componente del Comitato Tecnico-Scientifico
 - **Responsabile del Modulo 8** (Proprietà e Tutela del Dato)
 - Docente per il Modulo 7 (**Valutazione dei Sistemi di Information Retrieval**)
 
