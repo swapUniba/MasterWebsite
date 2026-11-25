@@ -4,6 +4,7 @@ role: Professore associato
 affiliation: Dipartimento di Informatica, Università degli Studi di Bari Aldo Moro
 category: Coordinamento
 photo: /images/1795001766161.jpeg
+photo_alt: Foto - Cataldo Musto
 email: cataldo.musto@uniba.it
 order: 10
 featured: true
