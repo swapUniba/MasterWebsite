@@ -10,5 +10,5 @@ order: 10
 featured: true
 ---
 - **Coordinatore del Master**
-- Responsabile del Modulo 1 (Allineamento - Basi di Programmazione) e del Modulo 9 (Casi d'Uso e Applicazioni).
+- **Responsabile del Modulo 1** (Allineamento - Basi di Programmazione) e del **Modulo 9** (Casi d'Uso e Applicazioni).
 
