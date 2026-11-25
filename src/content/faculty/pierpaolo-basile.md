@@ -8,4 +8,6 @@ photo_alt: Foto - Pierpaolo Basile
 order: 100
 featured: false
 ---
-**Responsabile del Modulo 2** (Strumenti e Risorse per AI e Data Science), Docente per il Modulo 5 (Deep Learning ed AI Generativa) e per il Modulo 9 (Casi d'Uso e Applicazioni per AI e Data Science)
+- **Responsabile del Modulo 2** (Strumenti e Risorse per AI e Data Science)
+- Docente per il Modulo 5 (**Basi di Linguistica Computazionale**) e per il Modulo 9 (**Laboratorio su NLP, Large Language Models e Retrieval-Augemented Generation**)
+
