@@ -5,6 +5,7 @@ affiliation: Politecnico di Bari
 category: Docente
 photo: /images/foto-profilo-263x216.jpg
 photo_alt: Foto - Alberto Mancino
+order: 130
 featured: false
 ---
 Docente del Modulo 5: **Deep Learning ed AI Generativa**
